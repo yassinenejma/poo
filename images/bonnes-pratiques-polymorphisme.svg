@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond -->
+  <rect width="800" height="500" fill="#f8f9fa" />
+  
+  <!-- Titre -->
+  <text x="400" y="30" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">Bonnes Pratiques du Polymorphisme en POO</text>
+  
+  <!-- Principe de substitution de Liskov -->
+  <g transform="translate(30, 60)">
+    <rect x="0" y="0" width="350" height="180" rx="5" fill="#e8f7f2" stroke="#2ecc71" stroke-width="2" />
+    <text x="175" y="25" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#27ae60">Principe de Substitution de Liskov</text>
+    
+    <!-- Diagramme -->
+    <rect x="40" y="40" width="120" height="30" rx="5" fill="#3498db" stroke="#2980b9" stroke-width="2" />
+    <text x="100" y="60" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Forme</text>
+    
+    <line x1="100" y1="70" x2="100" y2="85" stroke="#333" stroke-width="2" />
+    <line x1="100" y1="85" x2="100" y2="100" stroke="#333" stroke-width="2" />
+    
+    <rect x="40" y="100" width="120" height="30" rx="5" fill="#2ecc71" stroke="#27ae60" stroke-width="2" />
+    <text x="100" y="120" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Rectangle</text>
+    
+    <line x1="100" y1="130" x2="100" y2="145" stroke="#333" stroke-width="2" />
+    
+    <rect x="40" y="145" width="120" height="30" rx="5" fill="#e74c3c" stroke="#c0392b" stroke-width="2" />
+    <text x="100" y="165" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Carré</text>
+    
+    <!-- Explication -->
+    <text x="260" y="60" font-family="Arial" font-size="14" fill="#333">Une instance de la sous-classe</text>
+    <text x="260" y="80" font-family="Arial" font-size="14" fill="#333">doit pouvoir être utilisée partout</text>
+    <text x="260" y="100" font-family="Arial" font-size="14" fill="#333">où une instance de la classe mère</text>
+    <text x="260" y="120" font-family="Arial" font-size="14" fill="#333">est attendue, sans modifier le</text>
+    <text x="260" y="140" font-family="Arial" font-size="14" fill="#333">comportement du programme.</text>
+  </g>
+  
+  <!-- Composition vs Héritage -->
+  <g transform="translate(410, 60)">
+    <rect x="0" y="0" width="350" height="180" rx="5" fill="#fef5e9" stroke="#f39c12" stroke-width="2" />
+    <text x="175" y="25" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#e67e22">Composition vs Héritage</text>
+    
+    <!-- Diagramme Composition -->
+    <rect x="30" y="45" width="120" height="50" rx="5" fill="#3498db" stroke="#2980b9" stroke-width="2" />
+    <text x="90" y="65" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Voiture</text>
+    <text x="90" y="85" font-family="Arial" font-size="12" font-weight="bold" text-anchor="middle" fill="white">a un Moteur</text>
+    
+    <rect x="30" y="120" width="120" height="50" rx="5" fill="#e74c3c" stroke="#c0392b" stroke-width="2" />
+    <text x="90" y="140" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle" fill="white">Moteur</text>
+    <text x="90" y="160" font-family="Arial" font-size="12" text-anchor="middle" fill="white">démarrer()</text>
+    
+    <line x1="90" y1="95" x2="90" y2="120" stroke="#333" stroke-width="2" stroke-dasharray="5,5" />
+    <text x="100" y="110" font-family="Arial" font-size="12" fill="#333">utilise</text>
+    
+    <!-- Explication -->
+    <text x="240" y="65" font-family="Arial" font-size="14" fill="#333">Favoriser la composition</text>
+    <text x="240" y="85" font-family="Arial" font-size="14" fill="#333">à l'héritage quand c'est</text>
+    <text x="240" y="105" font-family="Arial" font-size="14" fill="#333">possible pour plus de</text>
+    <text x="240" y="125" font-family="Arial" font-size="14" fill="#333">flexibilité et éviter les</text>
+    <text x="240" y="145" font-family="Arial" font-size="14" fill="#333">hiérarchies trop complexes.</text>
+  </g>
+  
+  <!-- Duck Typing -->
+  <g transform="translate(30, 260)">
+    <rect x="0" y="0" width="350" height="180" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="2" />
+    <text x="175" y="25" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#2980b9">Duck Typing en Python</text>
+    
+    <!-- Code exemple -->
+    <rect x="20" y="40" width="310" height="130" rx="5" fill="#f1f1f1" stroke="#ddd" stroke-width="1" />
+    <text x="30" y="60" font-family="Consolas, monospace" font-size="14" fill="#333">def faire_nager(animal):</text>
+    <text x="45" y="80" font-family="Consolas, monospace" font-size="14" fill="#333">if hasattr(animal, 'nager'):</text>
+    <text x="60" y="100" font-family="Consolas, monospace" font-size="14" fill="#333">animal.nager()</text>
+    
+    <text x="30" y="130" font-family="Consolas, monospace" font-size="14" fill="#333"># Fonctionne avec n'importe quel objet</text>
+    <text x="30" y="150" font-family="Consolas, monospace" font-size="14" fill="#333"># ayant une méthode 'nager', peu</text>
+    <text x="30" y="170" font-family="Consolas, monospace" font-size="14" fill="#333"># importe sa classe</text>
+  </g>
+  
+  <!-- Classes abstraites et interfaces -->
+  <g transform="translate(410, 260)">
+    <rect x="0" y="0" width="350" height="180" rx="5" fill="#f4e9fe" stroke="#9b59b6" stroke-width="2" />
+    <text x="175" y="25" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#8e44ad">Classes abstraites</text>
+    
+    <!-- Code exemple -->
+    <rect x="20" y="40" width="310" height="130" rx="5" fill="#f1f1f1" stroke="#ddd" stroke-width="1" />
+    <text x="30" y="60" font-family="Consolas, monospace" font-size="14" fill="#333">from abc import ABC, abstractmethod</text>
+    <text x="30" y="80" font-family="Consolas, monospace" font-size="14" fill="#333">class FormeAbstraite(ABC):</text>
+    <text x="45" y="100" font-family="Consolas, monospace" font-size="14" fill="#333">@abstractmethod</text>
+    <text x="45" y="120" font-family="Consolas, monospace" font-size="14" fill="#333">def aire(self):</text>
+    <text x="60" y="140" font-family="Consolas, monospace" font-size="14" fill="#333">pass</text>
+    <text x="30" y="160" font-family="Consolas, monospace" font-size="14" fill="#333"># Les classes dérivées doivent implémenter</text>
+  </g>
+  
+  <!-- Note générale -->
+  <rect x="30" y="450" width="740" height="40" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="1" />
+  <text x="400" y="475" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="#2980b9">Le polymorphisme bien conçu favorise l'extensibilité et la maintenabilité du code</text>
+</svg>

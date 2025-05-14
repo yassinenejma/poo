@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion des Exceptions Python</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 800px; margin: 0 auto; padding: 20px; }
+        h1, h2 { color: #2c3e50; }
+        .code-block { 
+            background: #f5f5f5; 
+            padding: 15px; 
+            border-radius: 5px; 
+            overflow-x: auto;
+            font-family: 'Courier New', monospace;
+        }
+        table { border-collapse: collapse; width: 100%; margin: 15px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Gestion des Exceptions en Python</h1>
+        <p>Guide pratique pour débutants</p>
+    </header>
+
+    <nav>
+        <h2>Sommaire</h2>
+        <ul>
+            <li><a href="#introduction">Introduction</a></li>
+            <li><a href="#types">Types d'erreurs</a></li>
+            <li><a href="#try-except">Bloc try-except</a></li>
+            <li><a href="#else-finally">Blocs else et finally</a></li>
+            <li><a href="#raise">Lever des exceptions</a></li>
+            <li><a href="#context">Gestionnaires de contexte</a></li>
+            <li><a href="#examples">Exemples pratiques</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <section id="introduction">
+            <h2>1. Introduction aux erreurs et exceptions</h2>
+            <p>En programmation, une exception est un événement qui interrompt le flux normal d'exécution d'un programme.</p>
+            
+            <div class="code-block">
+                <h3>Exemple simple :</h3>
+                <pre><code>print(10 / 0)  # ZeroDivisionError</code></pre>
+            </div>
+        </section>
+
+        <section id="types">
+            <h2>2. Types d'erreurs en Python</h2>
+            <table>
+                <tr>
+                    <th>Erreur</th>
+                    <th>Description</th>
+                    <th>Exemple</th>
+                </tr>
+                <tr>
+                    <td><code>ZeroDivisionError</code></td>
+                    <td>Division par zéro</td>
+                    <td><code>10 / 0</code></td>
+                </tr>
+                <tr>
+                    <td><code>ValueError</code></td>
+                    <td>Valeur inappropriée</td>
+                    <td><code>int("abc")</code></td>
+                </tr>
+                <tr>
+                    <td><code>FileNotFoundError</code></td>
+                    <td>Fichier introuvable</td>
+                    <td><code>open("fichier_inexistant.txt")</code></td>
+                </tr>
+            </table>
+        </section>
+
+        <section id="try-except">
+            <h2>3. Bloc try-except</h2>
+            <div class="code-block">
+                <pre><code>try:
+    age = int(input("Entrez votre âge : "))
+except ValueError:
+    print("Veuillez entrer un nombre valide !")</code></pre>
+            </div>
+        </section>
+
+        <section id="else-finally">
+            <h2>4. Blocs else et finally</h2>
+            <div class="code-block">
+                <pre><code>try:
+    fichier = open("donnees.txt")
+except FileNotFoundError:
+    print("Fichier non trouvé")
+else:
+    print("Contenu :", fichier.read())
+    fichier.close()
+finally:
+    print("Opération terminée")</code></pre>
+            </div>
+        </section>
+
+        <section id="raise">
+            <h2>5. Lever des exceptions</h2>
+            <div class="code-block">
+                <pre><code>def calcul_racine(x):
+    if x < 0:
+        raise ValueError("Le nombre ne peut pas être négatif")
+    return x ** 0.5
+
+try:
+    calcul_racine(-4)
+except ValueError as e:
+    print("Erreur :", e)</code></pre>
+            </div>
+        </section>
+
+        <section id="context">
+            <h2>6. Gestionnaires de contexte</h2>
+            <div class="code-block">
+                <pre><code># Avec gestionnaire de contexte
+with open("fichier.txt") as f:
+    contenu = f.read()
+    # Le fichier se ferme automatiquement
+
+# Equivalent sans gestionnaire de contexte
+try:
+    f = open("fichier.txt")
+    contenu = f.read()
+finally:
+    f.close()</code></pre>
+            </div>
+        </section>
+
+        <section id="examples">
+            <h2>7. Exemple pratique complet</h2>
+            <div class="code-block">
+                <pre><code>def calcul_moyenne(notes):
+    try:
+        if not notes:
+            raise ValueError("La liste ne peut pas être vide")
+        
+        return sum(notes) / len(notes)
+    
+    except TypeError:
+        print("Erreur : La liste doit contenir des nombres")
+    except ZeroDivisionError:
+        print("Erreur : La liste ne peut pas être vide")
+    except Exception as e:
+        print(f"Erreur inattendue : {e}")
+    finally:
+        print("Fin du calcul")
+
+# Test
+notes = [15, 18, "20", 12]
+moyenne = calcul_moyenne(notes)</code></pre>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p> 2025 - Cours POO Simplifié</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Meilleures Pratiques pour les Exceptions en Python</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fonction pour dessiner une pratique avec icône
+        function drawPractice(x, y, width, height, title, description, iconType, color = '#f1f1f1', stroke = '#999') {
+            // Rectangle principal
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 2;
+            roundRect(x, y, width, height);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Icône
+            const iconSize = 30;
+            const iconX = x + 25;
+            const iconY = y + height/2;
+            
+            ctx.fillStyle = stroke;
+            ctx.strokeStyle = stroke;
+            
+            if (iconType === 'check') {
+                // Coche / check
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(iconX - iconSize/3, iconY);
+                ctx.lineTo(iconX - iconSize/6, iconY + iconSize/3);
+                ctx.lineTo(iconX + iconSize/2, iconY - iconSize/3);
+                ctx.stroke();
+            } else if (iconType === 'cross') {
+                // Croix / cross
+                ctx.lineWidth = 4;
+                ctx.beginPath();
+                ctx.moveTo(iconX - iconSize/3, iconY - iconSize/3);
+                ctx.lineTo(iconX + iconSize/3, iconY + iconSize/3);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(iconX + iconSize/3, iconY - iconSize/3);
+                ctx.lineTo(iconX - iconSize/3, iconY + iconSize/3);
+                ctx.stroke();
+            } else if (iconType === 'info') {
+                // Info
+                ctx.lineWidth = 3;
+                ctx.beginPath();
+                ctx.arc(iconX, iconY, iconSize/2, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.moveTo(iconX, iconY - iconSize/4);
+                ctx.lineTo(iconX, iconY + iconSize/4);
+                ctx.stroke();
+                
+                ctx.beginPath();
+                ctx.arc(iconX, iconY - iconSize/3, 1, 0, Math.PI * 2);
+                ctx.fill();
+            }
+            
+            // Titre
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'left';
+            ctx.fillText(title, x + 60, y + 25);
+            
+            // Description
+            if (description) {
+                ctx.font = '14px Arial';
+                const lines = description.split('\n');
+                lines.forEach((line, index) => {
+                    ctx.fillText(line, x + 60, y + 50 + index * 20);
+                });
+            }
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Meilleures Pratiques de Gestion des Exceptions en Python', canvas.width/2, 40);
+        
+        // Bonnes pratiques (à faire)
+        const doWidth = 340;
+        const doHeight = 90;
+        const leftX = 50;
+        
+        drawPractice(
+            leftX, 
+            80, 
+            doWidth, 
+            doHeight, 
+            'Être spécifique', 
+            'Capturez les exceptions spécifiques plutôt que\nles exceptions génériques (Exception).',
+            'check',
+            '#e8f7f2', 
+            '#27ae60'
+        );
+        
+        drawPractice(
+            leftX, 
+            180, 
+            doWidth, 
+            doHeight, 
+            'Gérer correctement', 
+            'Ne laissez pas passer silencieusement les exceptions,\ntraitez-les ou laissez-les se propager.',
+            'check',
+            '#e8f7f2', 
+            '#27ae60'
+        );
+        
+        drawPractice(
+            leftX, 
+            280, 
+            doWidth, 
+            doHeight, 
+            'Créer des exceptions personnalisées', 
+            'Utilisez des exceptions personnalisées pour\nles erreurs spécifiques à votre application.',
+            'check',
+            '#e8f7f2', 
+            '#27ae60'
+        );
+        
+        drawPractice(
+            leftX, 
+            380, 
+            doWidth, 
+            doHeight, 
+            'Utiliser finally ou with', 
+            'Assurez-vous toujours que les ressources sont\nlibérées, même en cas d\'exception.',
+            'check',
+            '#e8f7f2', 
+            '#27ae60'
+        );
+        
+        // Mauvaises pratiques (à éviter)
+        const dontWidth = 340;
+        const dontHeight = 90;
+        const rightX = 410;
+        
+        drawPractice(
+            rightX, 
+            80, 
+            dontWidth, 
+            dontHeight, 
+            'Capturer Exception', 
+            'Évitez de capturer la classe Exception générique\nsauf pour la journalisation ou la re-levée.',
+            'cross',
+            '#fdeaef', 
+            '#e74c3c'
+        );
+        
+        drawPractice(
+            rightX, 
+            180, 
+            dontWidth, 
+            dontHeight, 
+            'Passer silencieusement', 
+            'Ne jamais utiliser except: pass sans raison\nvalable (anti-pattern du "silence des erreurs").',
+            'cross',
+            '#fdeaef', 
+            '#e74c3c'
+        );
+        
+        drawPractice(
+            rightX, 
+            280, 
+            dontWidth, 
+            dontHeight, 
+            'Mélanger exceptions et flot de contrôle', 
+            'Les exceptions sont pour les situations\nexceptionnelles, pas pour le flux normal.',
+            'cross',
+            '#fdeaef', 
+            '#e74c3c'
+        );
+        
+        drawPractice(
+            rightX, 
+            380, 
+            dontWidth, 
+            dontHeight, 
+            'Capturer au mauvais niveau', 
+            'Ne capturez pas les exceptions au niveau incorrect\nde l\'abstraction de votre application.',
+            'cross',
+            '#fdeaef', 
+            '#e74c3c'
+        );
+        
+        // Conseil supplémentaire
+        const tipX = 50;
+        const tipY = 480;
+        const tipWidth = 700;
+        const tipHeight = 70;
+        
+        drawPractice(
+            tipX, 
+            tipY, 
+            tipWidth, 
+            tipHeight, 
+            'EAFP vs LBYL', 
+            'EAFP (Easier to Ask Forgiveness than Permission): try/except pour gérer les cas particuliers\nLBYL (Look Before You Leap): vérification préalable avec des if/else\nPython favorise généralement le style EAFP.',
+            'info',
+            '#f3e7ff', 
+            '#9b59b6'
+        );
+        
+        // Exemple de code du bon vs mauvais
+        const codeTopX = 100;
+        const codeTopY = 90;
+        const codeWidth = 600;
+        const codeHeight = 100;
+        
+        // Arrière-plan semi-transparent
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+        ctx.fillRect(codeTopX, codeTopY, codeWidth, codeHeight);
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('BON:', codeTopX + 100, codeTopY + 20);
+        ctx.fillText('MAUVAIS:', codeTopX + 400, codeTopY + 20);
+        
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        
+        const goodCode = [
+            'try:',
+            '    value = data[key]',
+            'except KeyError:',
+            '    # Gestion spécifique',
+            '    handle_missing_key()'
+        ];
+        
+        const badCode = [
+            'try:',
+            '    value = data[key]',
+            'except Exception:',
+            '    # Trop générique !',
+            '    pass  # Silence dangereux'
+        ];
+        
+        goodCode.forEach((line, i) => {
+            ctx.fillText(line, codeTopX + 20, codeTopY + 45 + i * 16);
+        });
+        
+        badCode.forEach((line, i) => {
+            ctx.fillText(line, codeTopX + 320, codeTopY + 45 + i * 16);
+        });
+    </script>
+</body>
+</html>

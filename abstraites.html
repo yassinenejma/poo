@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classes Abstraites et Interfaces en Python</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Classes Abstraites et Interfaces en Python</h1>
+            <p class="subtitle">Maîtriser la programmation abstraite et les interfaces en Python</p>
+        </div>
+    </header>
+
+    <nav class="table-of-contents">
+        <div class="container">
+            <h2>Sommaire</h2>
+            <ul>
+                <li><a href="#introduction">Introduction aux classes abstraites</a></li>
+                <li><a href="#abstract">Création de classes abstraites</a></li>
+                <li><a href="#interface">Les interfaces en Python</a></li>
+                <li><a href="#methodes">Méthodes abstraites</a></li>
+                <li><a href="#heritage">Héritage avec classes abstraites</a></li>
+                <li><a href="#best-practices">Bonnes pratiques</a></li>
+                <li><a href="#examples">Exemples pratiques</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="introduction" class="section">
+                <h2>Introduction aux classes abstraites</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Les classes abstraites en Python permettent de définir des classes qui ne peuvent pas être instanciées directement. Elles servent de modèle pour d'autres classes qui doivent implémenter certaines méthodes.</p>
+                        
+                        <p>Les principales caractéristiques des classes abstraites sont :</p>
+                        <ul>
+                            <li>Impossible d'instancier directement une classe abstraite</li>
+                            <li>Peut contenir des méthodes abstraites (qui doivent être implémentées)</li>
+                            <li>Peut contenir des méthodes concrètes (implémentées)</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="abstract" class="section">
+                <h2>Création de classes abstraites</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Pour créer une classe abstraite en Python, on utilise le module <code>abc</code> (Abstract Base Classes) :</p>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class ClasseAbstraite(ABC):
+    @abstractmethod
+    def methode_abstraite(self):
+        pass
+
+    def methode_concrete(self):
+        return "Méthode concrète"</code></pre>
+                    </div>
+                </div>
+                <div class="illustration-container">
+                    <img src="images/abstraites/abstract_class.svg" alt="Structure d'une classe abstraite" class="illustration">
+                    <p class="illustration-caption">Structure d'une classe abstraite avec méthode abstraite</p>
+                </div>
+            </section>
+
+            <section id="interface" class="section">
+                <h2>Les interfaces en Python</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>En Python, une interface est une classe abstraite qui définit uniquement des méthodes abstraites. Elle sert de contrat pour les classes qui l'implémentent.</p>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class Interface(ABC):
+    @abstractmethod
+    def methode1(self):
+        pass
+
+    @abstractmethod
+    def methode2(self):
+        pass
+
+
+class ClasseImplémentante(Interface):
+    def methode1(self):
+        return "Implémentation de methode1"
+
+    def methode2(self):
+        return "Implémentation de methode2"</code></pre>
+                    </div>
+                </div>
+                <div class="illustration-container">
+                    <img src="images/abstraites/interface.svg" alt="Structure d'une interface" class="illustration">
+                    <p class="illustration-caption">Structure d'une interface et sa classe implémentante</p>
+                </div>
+            </section>
+
+            <section id="methodes" class="section">
+                <h2>Méthodes abstraites</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Les méthodes abstraites sont des méthodes qui doivent être implémentées par les classes filles. Elles sont définies avec le décorateur <code>@abstractmethod</code>.</p>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class ClasseAbstraite(ABC):
+    @abstractmethod
+    def methode_abstraite(self):
+        pass
+
+class ClasseConcrète(ClasseAbstraite):
+    def methode_abstraite(self):
+        return "Implémentation de la méthode abstraite"</code></pre>
+                    </div>
+                </div>
+                <div class="illustration-container">
+                    <img src="images/abstraites/methodes_abstraites.svg" alt="Structure des méthodes abstraites" class="illustration">
+                    <p class="illustration-caption">Structure d'une méthode abstraite et sa classe implémentante</p>
+                </div>
+            </section>
+
+            <section id="heritage" class="section">
+                <h2>Héritage avec classes abstraites</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Les classes abstraites peuvent hériter d'autres classes abstraites, formant ainsi une hiérarchie d'abstraction.</p>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class ClasseAbstraiteParent(ABC):
+    @abstractmethod
+    def methode_parent(self):
+        pass
+
+class ClasseAbstraiteEnfant(ClasseAbstraiteParent, ABC):
+    @abstractmethod
+    def methode_enfant(self):
+        pass
+
+class ClasseConcrète(ClasseAbstraiteEnfant):
+    def methode_parent(self):
+        return "Implémentation de methode_parent"
+
+    def methode_enfant(self):
+        return "Implémentation de methode_enfant"</code></pre>
+                    </div>
+                </div>
+                <div class="illustration-container">
+                    <img src="images/abstraites/heritage_abstrait.svg" alt="Héritage avec classes abstraites" class="illustration">
+                    <p class="illustration-caption">Structure d'héritage avec classes abstraites</p>
+                </div>
+            </section>
+
+            <section id="best-practices" class="section">
+                <h2>Bonnes pratiques</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <h3>Quand utiliser les classes abstraites ?</h3>
+                        <ul>
+                            <li>Quand vous voulez définir un contrat que les classes filles doivent respecter</li>
+                            <li>Quand vous avez des méthodes communes à implémenter dans plusieurs classes</li>
+                            <li>Quand vous voulez empêcher l'instanciation directe d'une classe</li>
+                        </ul>
+
+                        <h3>Conseils d'utilisation</h3>
+                        <ul>
+                            <li>Évitez d'avoir trop de méthodes abstraites dans une classe</li>
+                            <li>Documentez clairement les responsabilités de chaque méthode abstraite</li>
+                            <li>Utilisez les interfaces pour définir des contrats simples</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="examples" class="section">
+                <h2>Exemples pratiques</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <h3>Exemple 1 : Formes géométriques</h3>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class Forme(ABC):
+    @abstractmethod
+    def aire(self):
+        pass
+
+    @abstractmethod
+    def perimetre(self):
+        pass
+
+class Rectangle(Forme):
+    def __init__(self, longueur, largeur):
+        self.longueur = longueur
+        self.largeur = largeur
+
+    def aire(self):
+        return self.longueur * self.largeur
+
+    def perimetre(self):
+        return 2 * (self.longueur + self.largeur)</code></pre>
+
+                        <h3>Exemple 2 : Base de données</h3>
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+
+class BaseDeDonnees(ABC):
+    @abstractmethod
+    def connecter(self):
+        pass
+
+    @abstractmethod
+    def deconnecter(self):
+        pass
+
+    @abstractmethod
+    def executer_requete(self, requete):
+        pass
+
+class MySQL(BaseDeDonnees):
+    def connecter(self):
+        return "Connexion MySQL établie"
+
+    def deconnecter(self):
+        return "Déconnexion MySQL"
+
+    def executer_requete(self, requete):
+        return f"Exécution requête MySQL : {requete}"</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="conclusion" class="section">
+                <h2>Conclusion</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Les classes abstraites et les interfaces sont des outils puissants de la programmation orientée objet en Python. Elles permettent de :</p>
+                        <ul>
+                            <li>Définir des contrats clairs entre les composants</li>
+                            <li>Assurer une cohérence dans l'implémentation</li>
+                            <li>Faciliter la maintenance et l'évolution du code</li>
+                        </ul>
+                        <p>En utilisant ces concepts de manière judicieuse, vous pouvez créer des architectures de logiciels plus robustes et maintenables.</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-python.min.js"></script>
+</body>
+</html>

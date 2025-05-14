@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg">
+    <!-- Fond -->
+    <rect x="0" y="0" width="1200" height="600" fill="#f8f9fa"/>
+    
+    <!-- Titre -->
+    <text x="600" y="50" font-size="36" fill="#2c3e50" text-anchor="middle" font-weight="bold">Méthodes Abstraites</text>
+    <!-- Fond -->
+    <rect x="0" y="0" width="800" height="400" fill="#f5f5f5"/>
+    
+    <!-- Classe abstraite -->
+    <!-- Classe abstraite -->
+    <rect x="100" y="100" width="300" height="200" fill="#f8f9fa" stroke="#3498db" stroke-width="3"/>
+    <rect x="100" y="100" width="300" height="30" fill="#3498db"/>
+    <text x="250" y="120" font-size="24" fill="white" text-anchor="middle">ClasseAbstraite</text>
+    <line x1="100" y1="130" x2="400" y2="130" stroke="#3498db" stroke-width="2"/>
+    
+    <text x="150" y="160" font-size="18" fill="#3498db">@abstractmethod</text>
+    <text x="150" y="190" font-size="18" fill="#3498db">def methode_abstraite(self):</text>
+    <text x="150" y="220" font-size="18" fill="#3498db">    pass</text>
+    
+    <!-- Flèche d'héritage -->
+    <!-- Flèche d'héritage -->
+    <line x1="400" y1="150" x2="600" y2="150" stroke="#3498db" stroke-width="4"/>
+    <path d="M595 150 L605 145 L605 155 Z" fill="#3498db" stroke="#3498db" stroke-width="2"/>
+    
+    <!-- Classe concrète -->
+    <!-- Classe concrète -->
+    <rect x="700" y="100" width="300" height="200" fill="#f8f9fa" stroke="#2ecc71" stroke-width="3"/>
+    <rect x="700" y="100" width="300" height="30" fill="#2ecc71"/>
+    <text x="850" y="120" font-size="24" fill="white" text-anchor="middle">ClasseConcrète</text>
+    <line x1="700" y1="130" x2="1000" y2="130" stroke="#2ecc71" stroke-width="2"/>
+    
+    <text x="750" y="160" font-size="18" fill="#333">def methode_abstraite(self):</text>
+    <text x="750" y="190" font-size="18" fill="#333">    # Implémentation concrète</text>
+    <text x="750" y="220" font-size="18" fill="#333">    pass</text>
+    
+    <!-- Légende -->
+    <!-- Légende -->
+    <rect x="200" y="450" width="800" height="100" fill="white" stroke="#3498db" stroke-width="2"/>
+    <text x="400" y="480" font-size="20" fill="#3498db">Méthode abstraite définie dans la classe abstraite</text>
+    <text x="400" y="510" font-size="20" fill="#2ecc71">Méthode implémentée dans la classe concrète</text>
+    
+    <!-- Bulles d'explication -->
+    <circle cx="150" cy="160" r="10" fill="white" stroke="#3498db" stroke-width="2"/>
+    <text x="165" y="165" font-size="16" fill="#3498db">*</text>
+    <line x1="150" y1="170" x2="150" y2="200" stroke="#3498db" stroke-width="2"/>
+    <text x="100" y="220" font-size="14" fill="#3498db">Décorateur @abstractmethod</text>
+</svg>

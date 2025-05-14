@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond -->
+  <rect width="600" height="400" fill="#f8f9fa" rx="10" ry="10"/>
+  
+  <!-- Titre -->
+  <text x="300" y="40" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#2c3e50">Structure du bloc try-except</text>
+  
+  <!-- Bloc try -->
+  <rect x="150" y="80" width="300" height="60" fill="#e8f7f2" stroke="#27ae60" stroke-width="2" rx="10" ry="10"/>
+  <text x="300" y="105" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">try:</text>
+  <text x="300" y="125" font-family="Arial" font-size="14" text-anchor="middle">Code susceptible de générer une exception</text>
+  
+  <!-- Flèche -->
+  <line x1="300" y1="140" x2="300" y2="170" stroke="#333" stroke-width="2"/>
+  <polygon points="300,170 295,160 305,160" fill="#333"/>
+  
+  <!-- Losange de décision -->
+  <polygon points="300,170 360,210 300,250 240,210" fill="#fef5e9" stroke="#e67e22" stroke-width="2"/>
+  <text x="300" y="215" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Exception?</text>
+  
+  <!-- Flèches de décision -->
+  <line x1="240" y1="210" x2="180" y2="280" stroke="#27ae60" stroke-width="2"/>
+  <polygon points="180,280 183,270 190,275" fill="#27ae60"/>
+  <text x="200" y="240" font-family="Arial" font-size="14" fill="#27ae60" font-weight="bold">Non</text>
+  
+  <line x1="360" y1="210" x2="420" y2="280" stroke="#e74c3c" stroke-width="2"/>
+  <polygon points="420,280 410,273 415,265" fill="#e74c3c"/>
+  <text x="400" y="240" font-family="Arial" font-size="14" fill="#e74c3c" font-weight="bold">Oui</text>
+  
+  <!-- Bloc except -->
+  <rect x="320" y="280" width="200" height="60" fill="#fdeaef" stroke="#e74c3c" stroke-width="2" rx="10" ry="10"/>
+  <text x="420" y="305" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle">except ExceptionType:</text>
+  <text x="420" y="325" font-family="Arial" font-size="14" text-anchor="middle">Code de gestion de l'exception</text>
+  
+  <!-- Bloc de continuation -->
+  <rect x="80" y="280" width="200" height="60" fill="#e8f4fd" stroke="#3498db" stroke-width="2" rx="10" ry="10"/>
+  <text x="180" y="315" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Poursuite normale du code</text>
+  
+  <!-- Exemple de code -->
+  <rect x="50" y="160" width="160" height="90" fill="#f5f5f5" stroke="#ddd" stroke-width="1" rx="5" ry="5"/>
+  <text x="60" y="175" font-family="Consolas, monospace" font-size="12" fill="#333">try:</text>
+  <text x="60" y="195" font-family="Consolas, monospace" font-size="12" fill="#333">    result = 10 / 0</text>
+  <text x="60" y="215" font-family="Consolas, monospace" font-size="12" fill="#333">except ZeroDivisionError:</text>
+  <text x="60" y="235" font-family="Consolas, monospace" font-size="12" fill="#333">    print("Division par</text>
+  <text x="60" y="255" font-family="Consolas, monospace" font-size="12" fill="#333">    zéro détectée!")</text>
+</svg>

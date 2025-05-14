@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Erreurs et Exceptions en Python</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Gestion des Erreurs et Exceptions en Python</h1>
+            <p class="subtitle">Maîtriser la robustesse et la fiabilité de vos applications</p>
+        </div>
+    </header>
+
+    <nav class="table-of-contents">
+        <div class="container">
+            <h2>Sommaire</h2>
+            <ul>
+                <li><a href="#introduction">Introduction aux erreurs et exceptions</a></li>
+                <li><a href="#types">Types d'erreurs en Python</a></li>
+                <li><a href="#try-except">Bloc try-except</a></li>
+                <li><a href="#else-finally">Blocs else et finally</a></li>
+                <li><a href="#raise">Lever des exceptions</a></li>
+                <li><a href="#custom">Exceptions personnalisées</a></li>
+                <li><a href="#context">Gestionnaires de contexte</a></li>
+                <li><a href="#best-practices">Bonnes pratiques</a></li>
+                <li><a href="#examples">Exemples pratiques</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="introduction" class="section">
+                <h2>Introduction aux erreurs et exceptions</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Dans tout programme informatique, des erreurs peuvent survenir : données incorrectes, fichiers manquants, problèmes de connexion réseau, etc. La <strong>gestion des erreurs et exceptions</strong> est donc un aspect fondamental de la programmation robuste.</p>
+                        
+                        <p>En Python, il existe deux grandes catégories d'erreurs :</p>
+                        <ul>
+                            <li><strong>Erreurs de syntaxe</strong> : détectées lors de la compilation (avant l'exécution)</li>
+                            <li><strong>Exceptions</strong> : erreurs détectées pendant l'exécution du programme</li>
+                        </ul>
+                        
+                        <p>Une bonne gestion des exceptions permet de :</p>
+                        <ul>
+                            <li>Éviter les crashs et interruptions inattendues</li>
+                            <li>Traiter gracieusement les situations anormales</li>
+                            <li>Fournir des messages d'erreur clairs et utiles</li>
+                            <li>Mettre en place des mécanismes de récupération</li>
+                        </ul>
+                    </div>
+                    <div class="image-content">
+                        <img src="images/exceptions/exception_flow.svg" alt="Flux d'exécution des exceptions en Python" class="centered-image">
+                        <p class="image-caption">Figure 1: Fonctionnement des exceptions pendant l'exécution d'un programme Python</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="types" class="section">
+                <h2>Types d'erreurs en Python</h2>
+                <p>Python possède une hiérarchie riche d'exceptions intégrées, toutes dérivant de la classe de base <code>BaseException</code>.</p>
+                
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <h3>Erreurs de syntaxe</h3>
+                        <p>Les erreurs de syntaxe (<code>SyntaxError</code>) se produisent lorsque l'interpréteur Python ne peut pas comprendre votre code en raison d'une violation des règles de syntaxe du langage.</p>
+                        
+                        <div class="code-block">
+                            <h4>Exemple d'erreur de syntaxe</h4>
+                            <pre><code class="language-python"># Parenthèse manquante
+if x > 5:
+    print("x est supérieur à 5"
+
+# Indentation incorrecte
+if x > 5:
+print("x est supérieur à 5")</code></pre>
+                        </div>
+                        
+                        <h3>Exceptions courantes</h3>
+                        <p>Voici quelques-unes des exceptions les plus fréquemment rencontrées en Python :</p>
+                        
+                        <table class="exceptions-table">
+                            <tr>
+                                <th>Exception</th>
+                                <th>Description</th>
+                                <th>Exemple</th>
+                            </tr>
+                            <tr>
+                                <td><code>TypeError</code></td>
+                                <td>Opération sur un type de données inapproprié</td>
+                                <td><code>"2" + 2</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>ValueError</code></td>
+                                <td>Valeur inappropriée pour un type de données</td>
+                                <td><code>int("abc")</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>NameError</code></td>
+                                <td>Variable ou nom non défini</td>
+                                <td><code>print(x)</code> (si x n'existe pas)</td>
+                            </tr>
+                            <tr>
+                                <td><code>IndexError</code></td>
+                                <td>Index hors limites d'une séquence</td>
+                                <td><code>liste[10]</code> (si la liste a moins de 10 éléments)</td>
+                            </tr>
+                            <tr>
+                                <td><code>KeyError</code></td>
+                                <td>Clé non trouvée dans un dictionnaire</td>
+                                <td><code>dict["clé_absente"]</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>FileNotFoundError</code></td>
+                                <td>Fichier non trouvé</td>
+                                <td><code>open("fichier_inexistant.txt")</code></td>
+                            </tr>
+                            <tr>
+                                <td><code>ZeroDivisionError</code></td>
+                                <td>Division par zéro</td>
+                                <td><code>10 / 0</code></td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="illustration-container">
+                        <img src="images/exceptions/exception_hierarchy.svg" alt="Hiérarchie des exceptions en Python" class="illustration">
+                        <p class="illustration-caption">Figure 2: Hiérarchie des exceptions intégrées en Python</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="try-except" class="section">
+                <h2>Bloc try-except</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Le mécanisme fondamental pour gérer les exceptions en Python est le bloc <code>try-except</code>. Il permet d'exécuter du code potentiellement problématique tout en prévoyant une réponse en cas d'erreur.</p>
+                        
+                        <h3>Structure de base</h3>
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    # Code susceptible de générer une exception
+    resultat = 10 / 0
+except ZeroDivisionError:
+    # Code exécuté en cas de division par zéro
+    print("Erreur : Division par zéro!")</code></pre>
+                        </div>
+                        
+                        <h3>Capturer plusieurs exceptions</h3>
+                        <p>Il est possible de gérer différentes exceptions de différentes manières :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    nombre = int(input("Entrez un nombre: "))
+    resultat = 10 / nombre
+    print(f"Résultat: {resultat}")
+except ValueError:
+    print("Erreur: Veuillez entrer un nombre valide!")
+except ZeroDivisionError:
+    print("Erreur: La division par zéro n'est pas autorisée!")</code></pre>
+                        </div>
+                        
+                        <h3>Capturer plusieurs exceptions avec le même traitement</h3>
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    # Code pouvant générer différentes erreurs
+    fichier = open("donnees.txt")
+    ligne = fichier.readline()
+    nombre = int(ligne.strip())
+except (FileNotFoundError, ValueError) as erreur:
+    print(f"Une erreur s'est produite: {erreur}")</code></pre>
+                        </div>
+                        
+                        <h3>Capturer toutes les exceptions</h3>
+                        <p>Il est possible de capturer toutes les exceptions, mais cette pratique doit être utilisée avec précaution :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    # Code potentiellement problématique
+    resultat = fonction_risquee()
+except Exception as e:
+    print(f"Une erreur inattendue s'est produite: {e}")
+    # Journalisation de l'erreur pour analyse ultérieure
+    logger.error(f"Erreur: {e}", exc_info=True)</code></pre>
+                        </div>
+                    </div>
+                    <div class="illustration-container">
+                        <img src="images/exceptions/try_except.svg" alt="Structure d'un bloc try-except" class="illustration">
+                        <p class="illustration-caption">Figure 3: Flux d'exécution du bloc try-except</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="else-finally" class="section">
+                <h2>Blocs else et finally</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>En plus des blocs <code>try</code> et <code>except</code>, Python propose deux clauses supplémentaires pour une gestion complète des exceptions : <code>else</code> et <code>finally</code>.</p>
+                        
+                        <h3>Clause else</h3>
+                        <p>La clause <code>else</code> permet d'exécuter du code uniquement si aucune exception n'a été levée dans le bloc <code>try</code>. C'est utile pour séparer le code "normal" du code de traitement des erreurs.</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    nombre = int(input("Entrez un nombre: "))
+except ValueError:
+    print("Ce n'est pas un nombre valide!")
+else:
+    # Ce bloc s'exécute seulement si aucune exception n'a été levée
+    print(f"Vous avez entré le nombre {nombre}")
+    # Opérations supplémentaires avec la valeur valide</code></pre>
+                        </div>
+                        
+                        <h3>Clause finally</h3>
+                        <p>La clause <code>finally</code> contient du code qui s'exécutera <em>toujours</em>, qu'une exception ait été levée ou non, et même si une exception n'a pas été attrapée. C'est idéal pour les opérations de nettoyage.</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    fichier = open("donnees.txt", "r")
+    contenu = fichier.read()
+    # Traitement du contenu...
+except FileNotFoundError:
+    print("Le fichier n'existe pas!")
+finally:
+    # Ce bloc s'exécute dans tous les cas
+    if 'fichier' in locals() and not fichier.closed:
+        fichier.close()
+        print("Fichier fermé avec succès")</code></pre>
+                        </div>
+                        
+                        <h3>Combinaison de tous les blocs</h3>
+                        <p>Il est possible de combiner tous ces blocs pour une gestion exhaustive des exceptions :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    fichier = open("donnees.txt", "r")
+    contenu = fichier.read()
+    valeur = int(contenu.strip())
+except FileNotFoundError:
+    print("Le fichier n'existe pas!")
+    valeur = 0
+except ValueError:
+    print("Le contenu du fichier n'est pas un nombre!")
+    valeur = 0
+else:
+    print(f"Valeur lue avec succès: {valeur}")
+    # Opérations supplémentaires avec la valeur valide
+finally:
+    if 'fichier' in locals() and not fichier.closed:
+        fichier.close()
+        print("Fichier fermé avec succès")</code></pre>
+                        </div>
+                    </div>
+                    <div class="illustration-container">
+                        <img src="images/exceptions/try_except_else_finally.svg" alt="Structure complète try-except-else-finally" class="illustration">
+                        <p class="illustration-caption">Figure 4: Flux d'exécution complet avec try, except, else et finally</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="raise" class="section">
+                <h2>Lever des exceptions</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>En plus de capturer des exceptions, Python vous permet de les lever explicitement avec l'instruction <code>raise</code>. Cela est utile pour signaler des erreurs dans votre propre code.</p>
+                        
+                        <h3>Lever une exception simple</h3>
+                        <div class="code-block">
+                            <pre><code class="language-python">def diviser(a, b):
+    if b == 0:
+        raise ZeroDivisionError("Division par zéro non autorisée")
+    return a / b
+
+try:
+    resultat = diviser(10, 0)
+except ZeroDivisionError as e:
+    print(f"Erreur: {e}")</code></pre>
+                        </div>
+                        
+                        <h3>Lever une exception avec un message personnalisé</h3>
+                        <div class="code-block">
+                            <pre><code class="language-python">def verifier_age(age):
+    if age < 0:
+        raise ValueError("L'âge ne peut pas être négatif")
+    if age > 120:
+        raise ValueError("L'âge semble incorrect (trop élevé)")
+    return age
+
+try:
+    mon_age = verifier_age(-5)
+except ValueError as e:
+    print(f"Erreur de validation: {e}")</code></pre>
+                        </div>
+                        
+                        <h3>Relever une exception capturée</h3>
+                        <p>Dans certains cas, vous voudrez peut-être capturer une exception, effectuer certaines opérations (comme la journalisation), puis la relever pour qu'elle soit gérée à un niveau supérieur :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python">try:
+    # Code pouvant générer une exception
+    resultat = 10 / 0
+except ZeroDivisionError:
+    print("Journalisation de l'erreur...")
+    # Relever l'exception pour qu'elle soit gérée ailleurs
+    raise</code></pre>
+                        </div>
+                    </div>
+                    <div class="illustration-container">
+                        <img src="images/exceptions/raise_exception.svg" alt="Mécanisme de propagation des exceptions avec raise" class="illustration">
+                        <p class="illustration-caption">Figure 5: Mécanisme de propagation des exceptions avec raise</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="custom" class="section">
+                <h2>Exceptions personnalisées</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Python vous permet de créer vos propres classes d'exceptions pour représenter des erreurs spécifiques à votre application. Ces exceptions personnalisées devraient hériter de la classe <code>Exception</code> ou d'une de ses sous-classes.</p>
+                        
+                        <h3>Définir une exception personnalisée</h3>
+                        <div class="code-block">
+                            <pre><code class="language-python">class MonErreur(Exception):
+    """Exception levée pour les erreurs spécifiques à mon application."""
+    pass
+
+class ErreurDeValeur(Exception):
+    """Exception levée lorsqu'une valeur est hors limites."""
+    
+    def __init__(self, valeur, message="Valeur hors limites"):
+        self.valeur = valeur
+        self.message = message
+        super().__init__(self.message)
+    
+    def __str__(self):
+        return f"{self.message}: {self.valeur}"</code></pre>
+                        </div>
+                        
+                        <h3>Utiliser des exceptions personnalisées</h3>
+                        <div class="code-block">
+                            <pre><code class="language-python">def verifier_temperature(temp):
+    if temp < -273.15:  # Zéro absolu en Celsius
+        raise ErreurDeValeur(temp, "La température est inférieure au zéro absolu")
+    if temp > 5000:  # Trop élevée pour la plupart des applications
+        raise ErreurDeValeur(temp, "La température est trop élevée")
+    return temp
+
+try:
+    temperature = verifier_temperature(-300)
+except ErreurDeValeur as e:
+    print(f"Erreur: {e}")  # Affiche le message personnalisé</code></pre>
+                        </div>
+                        
+                        <h3>Hiérarchie d'exceptions personnalisées</h3>
+                        <p>Pour des applications complexes, vous pouvez créer une hiérarchie d'exceptions :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python">class ErreurApplication(Exception):
+    """Classe de base pour toutes les exceptions de l'application."""
+    pass
+
+class ErreurDonnees(ErreurApplication):
+    """Erreurs liées aux données."""
+    pass
+
+class ErreurFichier(ErreurApplication):
+    """Erreurs liées aux fichiers."""
+    pass
+
+class ErreurReseau(ErreurApplication):
+    """Erreurs liées au réseau."""
+    pass
+
+# Utilisation
+try:
+    # Code risqué
+    if probleme_reseau:
+        raise ErreurReseau("Impossible de se connecter au serveur")
+except ErreurReseau as e:
+    print(f"Erreur réseau: {e}")
+except ErreurApplication as e:
+    print(f"Autre erreur d'application: {e}")</code></pre>
+                        </div>
+                    </div>
+                    <div class="illustration-container">
+                        <img src="images/exceptions/custom_exceptions.svg" alt="Création et utilisation d'exceptions personnalisées" class="illustration">
+                        <p class="illustration-caption">Figure 6: Création et utilisation d'exceptions personnalisées</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="context" class="section">
+                <h2>Gestionnaires de contexte</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Les gestionnaires de contexte (avec le mot-clé <code>with</code>) offrent une syntaxe élégante pour la gestion des ressources et des exceptions. Ils garantissent que certaines opérations sont effectuées avant et après un bloc de code, même si des exceptions se produisent.</p>
+                        
+                        <h3>Utilisation avec des fichiers</h3>
+                        <p>L'exemple le plus courant est la gestion des fichiers :</p>
+                        
+                        <div class="code-block">
+                            <pre><code class="language-python"># Sans gestionnaire de contexte
+try:
+    fichier = open("donnees.txt", "r")
+    contenu = fichier.read()
+    # Traitement du contenu...
+finally:
+    if 'fichier' in locals() and not fichier.closed:
+        fichier.close()
+
+# Avec gestionnaire de contexte (bien plus élégant)
+with open("donnees.txt", "r") as fichier:
+    contenu = fichier.read()
+    # Traitement du contenu...
+# Le fichier est automatiquement fermé ici, même en cas d'exception</code></pre>
+                        </div>
+                        
+                        <h3>Créer vos propres gestionnaires de contexte</h3>
+                        <p>Vous pouvez créer vos propres gestionnaires de contexte de deux façons :</p>
+                        
+                        <div class="code-block">
+                            <h4>1. En définissant une classe avec les méthodes __enter__ et __exit__</h4>
+                            <pre><code class="language-python">class MonGestionnaire:
+    def __init__(self, nom):
+        self.nom = nom
+        
+    def __enter__(self):
+        print(f"Entrée dans le contexte: {self.nom}")
+        return self  # L'objet retourné sera assigné à la variable après 'as'
+        
+    def __exit__(self, type_exc, valeur_exc, traceback_exc):
+        print(f"Sortie du contexte: {self.nom}")
+        if type_exc:
+            print(f"Une exception s'est produite: {valeur_exc}")
+            # Retourner True pour indiquer que l'exception a été gérée
+            return True
+
+# Utilisation
+with MonGestionnaire("exemple") as gestionnaire:
+    print("À l'intérieur du bloc with")
+    # Même si une exception se produit, __exit__ sera appelé
+    raise ValueError("Une erreur de test")</code></pre>
+                        </div>
+                        
+                        <div class="code-block">
+                            <h4>2. En utilisant le décorateur contextlib.contextmanager</h4>
+                            <pre><code class="language-python">from contextlib import contextmanager
+
+@contextmanager
+def mon_gestionnaire(nom):
+    print(f"Entrée dans le contexte: {nom}")
+    try:
+        yield  # Tout ce qui est avant yield s'exécute à l'entrée
+        print("Aucune exception n'a été levée")
+    except Exception as e:
+        print(f"Une exception s'est produite: {e}")
+        # Ne pas relever l'exception pour l'absorber
+    finally:
+        print(f"Sortie du contexte: {nom}")  # S'exécute toujours à la sortie
+
+# Utilisation
+with mon_gestionnaire("exemple"):
+    print("À l'intérieur du bloc with")
+    # L'exception sera attrapée par le gestionnaire
+    raise ValueError("Une erreur de test")</code></pre>
+                        </div>
+                    </div>
+                    <div class="illustration-container">
+                        <img src="images/exceptions/context_manager.svg" alt="Fonctionnement des gestionnaires de contexte" class="illustration">
+                        <p class="illustration-caption">Figure 7: Fonctionnement des gestionnaires de contexte</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="best-practices" class="section">
+                <h2>Bonnes pratiques</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Une bonne gestion des exceptions contribue à rendre votre code plus robuste et maintenable. Voici quelques principes à suivre :</p>
+                        
+                        <div class="best-practice">
+                            <h3>Soyez précis</h3>
+                            <p>Capturez des exceptions spécifiques plutôt que d'utiliser un bloc <code>except</code> générique. Cela permet de traiter différemment les différentes erreurs.</p>
+                            <div class="code-block">
+                                <pre><code class="language-python"># À éviter
+try:
+    # Code risqué
+    if probleme_reseau:
+        raise ErreurReseau("Impossible de se connecter au serveur")
+except ErreurReseau as e:
+    print(f"Erreur réseau: {e}")
+except ErreurApplication as e:
+    print(f"Autre erreur d'application: {e}")</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Maintenez un périmètre étroit</h3>
+                            <p>Limitez la taille des blocs <code>try</code> au strict minimum pour isoler précisément la source des erreurs.</p>
+                            <div class="code-block">
+                                <pre><code class="language-python"># À éviter
+try:
+    fichier = open("donnees.txt", "r")
+    contenu = fichier.read()
+    # Traitement du contenu...
+finally:
+    if 'fichier' in locals() and not fichier.closed:
+        fichier.close()
+
+# Avec gestionnaire de contexte (bien plus élégant)
+with open("donnees.txt", "r") as fichier:
+    contenu = fichier.read()
+    # Traitement du contenu...
+# Le fichier est automatiquement fermé ici, même en cas d'exception</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Nettoyez avec finally ou with</h3>
+                            <p>Utilisez toujours <code>finally</code> ou des gestionnaires de contexte (<code>with</code>) pour garantir la libération des ressources.</p>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Messages d'erreur clairs</h3>
+                            <p>Lorsque vous levez des exceptions, fournissez des messages clairs et informatifs qui aideront à diagnostiquer le problème.</p>
+                            <div class="code-block">
+                                <pre><code class="language-python"># Vague
+raise ValueError("Valeur incorrecte")
+
+# Précis et utile
+raise ValueError(f"La valeur {valeur} doit être comprise entre {min_val} et {max_val}")</code></pre>
+                            </div>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Ne pas ignorer silencieusement les exceptions</h3>
+                            <p>Évitez les blocs <code>except</code> vides ou qui absorbent les erreurs sans action appropriée.</p>
+                            <div class="code-block">
+                                <pre><code class="language-python"># À éviter
+try:
+    fonction_risquee()
+except:
+    pass  # Ignore l'erreur silencieusement = mauvaise pratique
+
+# Préférez au minimum la journalisation
+try:
+    fonction_risquee()
+except Exception as e:
+    logger.error(f"Erreur: {e}")  # Au moins, enregistrez l'erreur</code></pre>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="illustration-container">
+                        <img src="images/exceptions/best_practices.svg" alt="Meilleures pratiques pour la gestion des exceptions" class="illustration">
+                        <p class="illustration-caption">Figure 8: Bonnes pratiques pour la gestion des exceptions</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="examples" class="section">
+                <h2>Exemples pratiques</h2>
+                
+                <div class="example-card">
+                    <h3>Exemple 1: Validation des entrées utilisateur</h3>
+                    <div class="code-block">
+                        <pre><code class="language-python">def obtenir_age():
+    while True:
+        try:
+            age_str = input("Entrez votre âge: ")
+            age = int(age_str)
+            
+            if age < 0 or age > 120:
+                raise ValueError("L'âge doit être compris entre 0 et 120 ans")
+                
+            return age
+        except ValueError as e:
+            if str(e) == "invalid literal for int() with base 10":
+                print("Erreur: Veuillez entrer un nombre entier")
+            else:
+                print(f"Erreur: {e}")
+            print("Veuillez réessayer")
+
+# Utilisation
+try:
+    age_utilisateur = obtenir_age()
+    print(f"Âge enregistré: {age_utilisateur}")
+except KeyboardInterrupt:
+    print("\nOpération annulée par l'utilisateur")</code></pre>
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Exemple 2: Lecture de fichier JSON avec gestion d'erreurs robuste</h3>
+                    <div class="code-block">
+                        <pre><code class="language-python">import json
+import os
+from typing import Dict, Any, Optional
+
+def charger_config(chemin_fichier: str) -> Dict[str, Any]:
+    """
+    Charge un fichier de configuration JSON avec gestion d'erreurs complète.
+    
+    Args:
+        chemin_fichier: Chemin vers le fichier JSON
+        
+    Returns:
+        Dictionnaire contenant les données de configuration
+        
+    Raises:
+        FileNotFoundError: Si le fichier n'existe pas
+        json.JSONDecodeError: Si le fichier n'est pas un JSON valide
+        PermissionError: Si l'accès au fichier est refusé
+    """
+    config_par_defaut = {"debug": False, "log_level": "info"}
+    
+    try:
+        # Vérifier si le fichier existe
+        if not os.path.exists(chemin_fichier):
+            print(f"Le fichier de configuration {chemin_fichier} n'existe pas")
+            print("Création d'un fichier de configuration par défaut...")
+            
+            try:
+                with open(chemin_fichier, 'w') as f_config:
+                    json.dump(config_par_defaut, f_config, indent=4)
+                print(f"Fichier de configuration créé avec succès: {chemin_fichier}")
+            except (PermissionError, IOError) as e:
+                print(f"Impossible de créer le fichier de configuration: {e}")
+                return config_par_defaut
+        
+        # Ouvrir et lire le fichier
+        with open(chemin_fichier, 'r') as f_config:
+            try:
+                config = json.load(f_config)
+                print(f"Configuration chargée depuis {chemin_fichier}")
+                return config
+            except json.JSONDecodeError as e:
+                print(f"Erreur de format JSON dans {chemin_fichier}: {e}")
+                print("Utilisation de la configuration par défaut")
+                return config_par_defaut
+                
+    except PermissionError:
+        print(f"Accès refusé au fichier {chemin_fichier}")
+        return config_par_defaut
+    except Exception as e:
+        print(f"Erreur inattendue lors du chargement de la configuration: {e}")
+        return config_par_defaut
+
+# Utilisation
+config = charger_config("config.json")
+print("Configuration:", config)</code></pre>
+                    </div>
+                </div>
+
+                <div class="example-card">
+                    <h3>Exemple 3: Client réseau avec gestion des exceptions</h3>
+                    <div class="code-block">
+                        <pre><code class="language-python">import requests
+import time
+from requests.exceptions import RequestException, Timeout, ConnectionError
+
+class APIClient:
+    def __init__(self, base_url, timeout=10, max_retries=3):
+        self.base_url = base_url
+        self.timeout = timeout
+        self.max_retries = max_retries
+        
+    def get(self, endpoint, params=None):
+        """Effectue une requête GET avec gestion des erreurs et retries."""
+        url = f"{self.base_url}/{endpoint}"
+        
+        for tentative in range(1, self.max_retries + 1):
+            try:
+                response = requests.get(
+                    url, 
+                    params=params, 
+                    timeout=self.timeout
+                )
+                
+                # Vérifier le code de statut HTTP
+                response.raise_for_status()
+                
+                # Retourner les données JSON
+                return response.json()
+                
+            except Timeout:
+                print(f"Tentative {tentative}/{self.max_retries}: Délai d'attente dépassé")
+                
+            except ConnectionError:
+                print(f"Tentative {tentative}/{self.max_retries}: Erreur de connexion")
+                
+            except requests.HTTPError as e:
+                status_code = e.response.status_code
+                
+                if status_code == 404:
+                    print(f"Ressource non trouvée: {url}")
+                    return None
+                elif status_code >= 500:
+                    print(f"Erreur serveur (code {status_code}), nouvel essai...")
+                else:
+                    print(f"Erreur HTTP (code {status_code}): {e}")
+                    return None
+                    
+            except RequestException as e:
+                print(f"Erreur de requête: {e}")
+                return None
+                
+            except ValueError as e:
+                print(f"Erreur de décodage JSON: {e}")
+                return None
+                
+            # Attendre avant de réessayer (sauf pour la dernière tentative)
+            if tentative < self.max_retries:
+                time.sleep(1 * tentative)  # Attente progressive
+        
+        print(f"Échec après {self.max_retries} tentatives")
+        return None
+
+# Utilisation
+client = APIClient("https://api.exemple.com")
+try:
+    donnees = client.get("users/1")
+    if donnees:
+        print(f"Données reçues: {donnees}")
+    else:
+        print("Impossible d'obtenir les données")
+except Exception as e:
+    print(f"Erreur inattendue: {e}")</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="conclusion" class="section">
+                <h2>Conclusion</h2>
+                <div class="conclusion-wrapper">
+                    <p>La gestion des erreurs et des exceptions est un aspect fondamental de la programmation robuste en Python. Elle vous permet de prévoir et de traiter gracieusement les situations anormales qui peuvent survenir pendant l'exécution de votre code.</p>
+                    
+                    <p>En maîtrisant les blocs <code>try</code>, <code>except</code>, <code>else</code>, et <code>finally</code>, ainsi que la création d'exceptions personnalisées et l'utilisation de gestionnaires de contexte, vous pourrez développer des applications plus fiables et maintenables.</p>
+                    
+                    <p>Rappelez-vous toujours qu'une bonne gestion des exceptions ne consiste pas seulement à éviter les crashs, mais aussi à fournir des informations utiles pour le diagnostic et la résolution des problèmes.</p>
+                    
+                    <div class="key-takeaways">
+                        <h3>Points clés à retenir</h3>
+                        <ul>
+                            <li>Capturez des exceptions spécifiques plutôt que génériques</li>
+                            <li>Documenter les exceptions</li>
+                            <li>Gérer correctement</li>
+                            <li>Créer des exceptions personnalisées</li>
+                            <li>Utiliser finally ou with</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 OFPPT - Formation Développement Digital</p>
+            <p>Cours sur la Gestion des Erreurs et Exceptions en Python</p>
+        </div>
+    </footer>
+    
+    <!-- Ajout des scripts JS en fin de page -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

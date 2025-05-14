@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Lever des exceptions avec raise</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fonction pour dessiner une flèche
+        function drawArrow(fromX, fromY, toX, toY, color = '#333', text = '', textColor = '#333') {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+            
+            // Triangle de la flèche
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            const arrowSize = 10;
+            
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle - Math.PI/6),
+                toY - arrowSize * Math.sin(angle - Math.PI/6)
+            );
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle + Math.PI/6),
+                toY - arrowSize * Math.sin(angle + Math.PI/6)
+            );
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+            
+            // Texte sur la flèche
+            if (text) {
+                const midX = (fromX + toX) / 2;
+                const midY = (fromY + toY) / 2;
+                const offset = 15;
+                
+                ctx.fillStyle = textColor;
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(text, midX, midY - offset);
+            }
+        }
+        
+        // Fonction pour dessiner une bulle de fonction
+        function drawFunction(x, y, width, height, name, description, color = '#f1f1f1', stroke = '#999') {
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 2;
+            roundRect(x, y, width, height);
+            ctx.fill();
+            ctx.stroke();
+            
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(name, x + width/2, y + 25);
+            
+            if (description) {
+                ctx.font = '14px Arial';
+                ctx.fillText(description, x + width/2, y + 50);
+            }
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Lever des Exceptions avec raise', canvas.width/2, 40);
+        
+        // Position de départ
+        const startX = 100;
+        const startY = 100;
+        const boxWidth = 240;
+        const boxHeight = 70;
+        
+        // Fonction 1 - Vérification
+        drawFunction(startX, startY, boxWidth, boxHeight, 
+                   'Vérification de condition', 
+                   'if age < 0:', 
+                   '#e8f7f2', '#27ae60');
+        
+        // Fonction 2 - Lever exception
+        drawFunction(startX + 300, startY, boxWidth, boxHeight, 
+                   'Lever une exception', 
+                   'raise ValueError("Âge négatif")', 
+                   '#fdeaef', '#e74c3c');
+        
+        // Flèche de condition à exception
+        drawArrow(startX + boxWidth, startY + boxHeight/2, 
+                 startX + 300, startY + boxHeight/2, 
+                 '#e74c3c', 'Condition invalide', '#e74c3c');
+        
+        // Fonction 3 - Continuer
+        drawFunction(startX, startY + 120, boxWidth, boxHeight, 
+                   'Continuer l\'exécution', 
+                   'print(f"Âge valide : {age}")', 
+                   '#e8f4fd', '#3498db');
+        
+        // Flèche de condition à continuer
+        drawArrow(startX + boxWidth/2, startY + boxHeight, 
+                 startX + boxWidth/2, startY + 120, 
+                 '#27ae60', 'Condition valide', '#27ae60');
+        
+        // Fonction 4 - Propagation
+        drawFunction(startX + 300, startY + 120, boxWidth, boxHeight, 
+                   'Propagation', 
+                   'Remonte la pile d\'appels', 
+                   '#fef5e9', '#e67e22');
+        
+        // Flèche d'exception à propagation
+        drawArrow(startX + 300 + boxWidth/2, startY + boxHeight, 
+                 startX + 300 + boxWidth/2, startY + 120, 
+                 '#e67e22');
+        
+        // Fonction 5 - Interception
+        drawFunction(startX + 300, startY + 240, boxWidth, boxHeight, 
+                   'Interception', 
+                   'except ValueError as err:', 
+                   '#f3e7ff', '#9b59b6');
+        
+        // Flèche de propagation à interception
+        drawArrow(startX + 300 + boxWidth/2, startY + 120 + boxHeight, 
+                 startX + 300 + boxWidth/2, startY + 240, 
+                 '#9b59b6');
+        
+        // Fonction 6 - Fin
+        drawFunction(startX + 150, startY + 360, boxWidth, boxHeight, 
+                   'Fin du programme', 
+                   'Sortie normale ou avec erreur', 
+                   '#f1f1f1', '#7f8c8d');
+        
+        // Flèches vers la fin
+        drawArrow(startX + boxWidth/2, startY + 120 + boxHeight, 
+                 startX + 150 + boxWidth/3, startY + 360, 
+                 '#3498db');
+        
+        drawArrow(startX + 300 + boxWidth/2, startY + 240 + boxHeight, 
+                 startX + 150 + 2*boxWidth/3, startY + 360, 
+                 '#9b59b6');
+        
+        // Encadré d'exemple de code
+        const codeX = 50;
+        const codeY = 320;
+        const codeWidth = 350;
+        const codeHeight = 160;
+        
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(codeX, codeY, codeWidth, codeHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Exemple de code :', codeX + 10, codeY + 20);
+        
+        ctx.font = '14px Consolas, monospace';
+        const code = [
+            'def verifier_age(age):',
+            '    if age < 0:',
+            '        raise ValueError("L\'âge ne peut pas être négatif")',
+            '    elif age > 120:',
+            '        raise ValueError("Âge peu probable")',
+            '    return True',
+            '',
+            'try:',
+            '    verifier_age(-5)',
+            'except ValueError as err:',
+            '    print(f"Erreur: {err}")'
+        ];
+        
+        code.forEach((line, i) => {
+            ctx.fillText(line, codeX + 10, codeY + 45 + i * 18);
+        });
+    </script>
+</body>
+</html>

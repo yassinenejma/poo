@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Polymorphisme de Sous-type</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Polymorphisme de Sous-type (Héritage)', canvas.width/2, 40);
+        
+        // Classe Animal
+        ctx.fillStyle = '#3498db';
+        ctx.strokeStyle = '#2980b9';
+        ctx.lineWidth = 2;
+        roundRect(300, 70, 200, 80);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Animal', 400, 95);
+        
+        ctx.font = '14px Consolas, monospace';
+        ctx.fillText('faire_son()', 400, 120);
+        ctx.fillText('se_deplacer()', 400, 140);
+        
+        // Flèches d'héritage
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        
+        // Ligne verticale depuis Animal
+        ctx.beginPath();
+        ctx.moveTo(400, 150);
+        ctx.lineTo(400, 180);
+        ctx.stroke();
+        
+        // Ligne horizontale
+        ctx.beginPath();
+        ctx.moveTo(150, 180);
+        ctx.lineTo(650, 180);
+        ctx.stroke();
+        
+        // Lignes verticales vers les sous-classes
+        for (let x of [150, 400, 650]) {
+            ctx.beginPath();
+            ctx.moveTo(x, 180);
+            ctx.lineTo(x, 210);
+            ctx.stroke();
+        }
+        
+        // Classes dérivées
+        const classes = [
+            { x: 50, y: 210, color: '#2ecc71', border: '#27ae60', name: 'Chien', methods: ['faire_son() → "Woof!"', 'se_deplacer() → "Court"'] },
+            { x: 300, y: 210, color: '#e74c3c', border: '#c0392b', name: 'Chat', methods: ['faire_son() → "Meow!"', 'se_deplacer() → "Bondit"'] },
+            { x: 550, y: 210, color: '#9b59b6', border: '#8e44ad', name: 'Oiseau', methods: ['faire_son() → "Cui-cui!"', 'se_deplacer() → "Vole"'] }
+        ];
+        
+        classes.forEach(cls => {
+            ctx.fillStyle = cls.color;
+            ctx.strokeStyle = cls.border;
+            roundRect(cls.x, cls.y, 200, 90);
+            ctx.fill();
+            ctx.stroke();
+            
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(cls.name, cls.x + 100, cls.y + 25);
+            
+            ctx.font = '14px Consolas, monospace';
+            cls.methods.forEach((method, i) => {
+                ctx.fillText(method, cls.x + 100, cls.y + 50 + i * 20);
+            });
+        });
+        
+        // Exemple de code
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(50, 330, 400, 130);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Fonction polymorphique', 250, 355);
+        
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        const code = [
+            'def comportement_animal(animal):',
+            '    print(f"Son: {animal.faire_son()}")',
+            '    print(f"Déplacement: {animal.se_deplacer()}")',
+            '',
+            'animaux = [Chien(), Chat(), Oiseau()]',
+            'for animal in animaux:',
+            '    comportement_animal(animal)'
+        ];
+        
+        code.forEach((line, i) => {
+            ctx.fillText(line, 70, 380 + i * 20);
+        });
+        
+        // Explication
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(470, 330, 280, 130);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'center';
+        const explanation = [
+            'Une seule fonction peut traiter',
+            'différentes classes dérivées.',
+            '',
+            'Chaque objet répond selon',
+            'sa propre implémentation.',
+            '',
+            'C\'est l\'essence du polymorphisme!'
+        ];
+        
+        explanation.forEach((line, i) => {
+            ctx.fillText(line, 610, 355 + i * 20);
+        });
+    </script>
+</body>
+</html>

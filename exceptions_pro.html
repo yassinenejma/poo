@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion Professionnelle des Exceptions Python</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Icônes Bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    
+    <!-- PrismJS pour la coloration syntaxique -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/themes/prism-okaidia.min.css" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.8;
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 280px;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            padding: 2rem;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .nav-icon {
+            font-size: 1.2rem;
+            width: 24px;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 0;
+            background: #f8f9fa;
+        }
+        
+        .diagram-container {
+            background: #f8f9fa;
+            border-radius: 12px;
+            overflow: hidden;
+            margin: 2rem 0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .code-container {
+            background: #282c34;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            color: #abb2bf;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .code-container code {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        .lead {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+                box-shadow: none;
+            }
+            
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+        }
+        
+        .section {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .section-subtitle {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .code-container {
+            background: #282c34;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            color: #abb2bf;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .code-container code {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        iframe {
+            width: 100%;
+            height: 600px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin: 2rem 0;
+        }
+        
+        .lead {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        
+        .content-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+    
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.8;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 15px;
+            padding: 3rem;
+            margin-bottom: 3rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+        
+        .section-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .code-container {
+            background: #282c34;
+            border-radius: 12px;
+            padding: 2rem;
+            margin: 2.5rem 0;
+            color: #abb2bf;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .code-container code {
+            font-size: 1.2rem;
+            line-height: 1.8;
+        }
+        
+        iframe {
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        iframe:hover {
+            transform: scale(1.02);
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .lead {
+            font-size: 1.5rem;
+            color: var(--dark);
+            margin-bottom: 2rem;
+        }
+        
+        .sidebar {
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            color: white;
+            height: 100vh;
+            position: fixed;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+        
+        .main-content {
+            margin-left: 280px;
+            padding: 2rem;
+        }
+        
+        .code-container pre {
+            margin: 0;
+            padding: 0;
+            overflow: visible;
+            background: transparent;
+        }
+        
+        .code-container code {
+            display: block;
+            padding: 0.5rem;
+            background: #2c313c;
+            border-radius: 4px;
+        }
+        
+        .code-container {
+            background: #282c34;
+            border-radius: 8px;
+            padding: 2rem;
+            margin: 2rem 0;
+            color: #abb2bf;
+            font-family: 'Fira Code', monospace;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            overflow-wrap: break-word;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: visible !important;
+            font-size: 1.3rem;
+            line-height: 2;
+            border: 1px solid #333;
+            display: block;
+            position: relative;
+            z-index: 1;
+            width: 100%;
+            max-width: 100%;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .code-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.1);
+            z-index: -1;
+        }
+        
+        .code-container pre {
+            margin: 0;
+            padding: 1rem;
+            overflow: visible !important;
+            background: transparent;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+        }
+        
+        .code-container code {
+            display: block;
+            padding: 1rem;
+            background: #2c313c;
+            border-radius: 4px;
+            overflow-x: visible !important;
+            border: 1px solid #444;
+            width: 100%;
+            max-width: 100%;
+        }
+        
+        .code-container pre {
+            margin: 0;
+            padding: 0;
+            overflow: visible !important;
+            background: transparent;
+        }
+        
+        .code-container code {
+            display: block;
+            padding: 0.5rem;
+            background: #2c313c;
+            border-radius: 4px;
+            overflow-x: visible !important;
+        }
+        
+        .nav-link {
+            color: rgba(255,255,255,0.8);
+            margin-bottom: 5px;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+        
+        .nav-link:hover, .nav-link.active {
+            background-color: rgba(255,255,255,0.1);
+            color: white;
+        }
+        
+        .section-card {
+            background: white;
+            border-radius: 10px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        @media (max-width: 992px) {
+            .sidebar {
+                width: 100%;
+                height: auto;
+                position: relative;
+            }
+            .main-content {
+                margin-left: 0;
+            }
+        }
+        
+        @media (min-width: 768px) {
+            .code-container {
+                width: 100%;  /* Plus large sur desktop */
+                margin-left: 0;
+                margin-right: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <div class="sidebar">
+        <div class="text-center mb-4">
+            <i class="bi bi-shield-shaded nav-icon" style="font-size: 2.5rem;"></i>
+            <h3 class="mt-2">Gestion des Exceptions</h3>
+            <hr style="background-color: rgba(255,255,255,0.2); margin: 1rem 0;">
+        </div>
+        
+        <nav class="nav flex-column">
+            <a class="nav-link active" href="#intro">
+                <i class="bi bi-house-door nav-icon"></i>
+                <span>Introduction</span>
+            </a>
+            
+            <a class="nav-link" href="#types">
+                <i class="bi bi-exclamation-triangle nav-icon"></i>
+                <span>Types d'erreurs</span>
+            </a>
+            
+            <a class="nav-link" href="#try-except">
+                <i class="bi bi-code-slash nav-icon"></i>
+                <span>Bloc try-except</span>
+            </a>
+            
+            <a class="nav-link" href="#else-finally">
+                <i class="bi bi-diagram-2 nav-icon"></i>
+                <span>Else et Finally</span>
+            </a>
+            
+            <a class="nav-link" href="#raise">
+                <i class="bi bi-arrow-up-circle nav-icon"></i>
+                <span>Lever des exceptions</span>
+            </a>
+            
+            <a class="nav-link" href="#context">
+                <i class="bi bi-folder-symlink nav-icon"></i>
+                <span>Context Managers</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="main-content">
+    <!-- Contenu principal -->
+    <div class="content-container">
+        <!-- Section Introduction -->
+        <section class="section" id="intro">
+            <h1 class="section-title">Introduction à la Gestion des Exceptions</h1>
+            <p class="lead">Comprendre et maîtriser la gestion des erreurs en Python</p>
+            
+            <div class="text-center mb-5">
+                <h2 class="section-subtitle">Hiérarchie des Exceptions</h2>
+                <p class="lead">Organisation complète des exceptions en Python</p>
+                <div class="diagram-container">
+                    <iframe src="images/exceptions-hierarchy.html" loading="lazy"></iframe>
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <p>En Python, les erreurs sont gérées à travers un système d'exceptions. Cette approche permet de :</p>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Gérer les erreurs de manière élégante</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Maintenir le code propre et lisible</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Prévenir les erreurs potentielles</li>
+                    <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> Assurer la robustesse des applications</li>
+                </ul>
+            </div>
+            <p class="lead">Compréhension approfondie de la gestion des erreurs en Python</p>
+                <span class="badge bg-primary">Niveau Débutant</span>
+            </div>
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="lead">
+                        Les exceptions permettent de gérer proprement les erreurs pendant l'exécution d'un programme.
+                    </p>
+                    
+                    <div class="alert alert-primary">
+                        <i class="bi bi-info-circle-fill"></i> Une exception interrompt le flux normal du programme si elle n'est pas traitée.
+                    </div>
+                    
+                    <div class="alert alert-success">
+                        <i class="bi bi-lightbulb-fill"></i> Le traitement des exceptions rend votre code plus robuste et prévisible.
+                    </div>
+                </div>
+                
+                <div class="col-md-6 text-center">
+                    <p class="text-muted mt-2">Schéma du flux de gestion des exceptions</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Types d'erreurs -->
+        <section class="section" id="types">
+            <h2 class="section-title">Types d'Erreurs en Python</h2>
+            <p class="lead">Comprendre les différents types d'erreurs</p>
+            
+            <div class="text-center mb-5">
+                <h3 class="section-subtitle">Structure des Exceptions</h3>
+                <p class="lead">Organisation hiérarchique des exceptions</p>
+                <div class="diagram-container">
+                    <iframe src="images/exceptions-hierarchy.html" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <p>En Python, les erreurs sont gérées à travers un système d'exceptions. Voici les principaux types d'erreurs :</p>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Types Principaux</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-exclamation-circle text-warning"></i> <code>SyntaxError</code> : Erreur de syntaxe</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-circle text-warning"></i> <code>NameError</code> : Variable non définie</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-circle text-warning"></i> <code>TypeError</code> : Opération inappropriée sur un type</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-circle text-warning"></i> <code>ValueError</code> : Valeur incorrecte</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-circle text-warning"></i> <code>IndexError</i> : Index hors limites</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-circle text-warning"></i> <code>KeyError</code> : Clé non trouvée dans un dictionnaire</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-circle text-warning"></i> <code>FileNotFoundError</code> : Fichier non trouvé</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <pre><code class="language-python"># Exemple de gestion des erreurs
+try:
+    # Code susceptible de lever une exception
+    age = int(input("Quel est votre âge ? "))
+except ValueError:
+    # Gestion de l'exception
+    print("Veuillez entrer un nombre valide")
+</code></pre>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <i class="bi bi-info-circle"></i> <strong>Conseil :</strong> Il est recommandé de capturer des exceptions spécifiques plutôt que d'utiliser un <code>except:</code> général.
+            </div>
+        </section>
+
+        <!-- Section Try-Except -->
+        <section class="section" id="try-except">
+            <h2 class="section-title">Le Bloc try-except</h2>
+            <p class="lead">La base de la gestion des erreurs en Python</p>
+            
+            <div class="text-center mb-5">
+                <h3 class="section-subtitle">Structure du try-except</h3>
+                <p class="lead">Comment gérer les erreurs en Python</p>
+                <div class="diagram-container">
+                    <iframe src="images/exceptions-try-except.html" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <p>Le bloc try-except est la structure de base pour gérer les exceptions en Python. Il permet d'exécuter du code potentiellement dangereux et de gérer les erreurs qui pourraient survenir.</p>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Structure de base</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-code-slash text-primary"></i> <code>try</code> : Code qui pourrait lever une exception</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-triangle text-warning"></i> <code>except</code> : Code à exécuter si une exception est levée</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <pre><code class="language-python">try:
+    # Code qui pourrait lever une exception
+    resultat = 10 / nombre
+except ZeroDivisionError:
+    # Gestion de la division par zéro
+    print("Impossible de diviser par zéro")
+</code></pre>
+            </div>
+
+            <div class="alert alert-warning mt-4">
+                <i class="bi bi-exclamation-triangle"></i> <strong>Attention :</strong> Évitez les <code>except:</code> vides qui capturent toutes les exceptions sans distinction.
+            </div>
+        </section>
+
+        <!-- Section Else-Finally -->
+        <section class="section" id="else-finally">
+            <h2 class="section-title">Else et Finally</h2>
+            <p class="lead">Compléments de la gestion des exceptions</p>
+            
+            <div class="text-center mb-5">
+                <h3 class="section-subtitle">Structure complète</h3>
+                <p class="lead">Les blocs else et finally pour une gestion d'erreurs complète</p>
+                <div class="diagram-container">
+                    <iframe src="images/exceptions-try-except.html" loading="lazy"></iframe>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <p>Les blocs <code>else</code> et <code>finally</code> complètent la structure try-except pour une gestion d'erreurs plus complète.</p>
+                
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Structure complète</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><i class="bi bi-code-slash text-primary"></i> <code>try</code> : Code qui pourrait lever une exception</li>
+                            <li class="list-group-item"><i class="bi bi-exclamation-triangle text-warning"></i> <code>except</code> : Gestion de l'exception</li>
+                            <li class="list-group-item"><i class="bi bi-check-circle text-success"></i> <code>else</code> : Code à exécuter si tout va bien</li>
+                            <li class="list-group-item"><i class="bi bi-arrow-return-right text-info"></i> <code>finally</code> : Code qui s'exécute toujours</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="code-container">
+                <pre><code class="language-python">try:
+    # Code qui pourrait lever une exception
+    resultat = 10 / nombre
+except ZeroDivisionError:
+    print("Impossible de diviser par zéro")
+else:
+    print(f"Le résultat est {resultat}")
+finally:
+    print("Cette partie s'exécute toujours")
+</code></pre>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <i class="bi bi-lightbulb"></i> <strong>Bonnes pratiques :</strong>
+                <ul>
+                    <li>Utilisez <code>else</code> pour le code qui dépend du <code>try</code> mais ne doit pas lever d'exception</li>
+                    <li>Utilisez <code>finally</code> pour les opérations de nettoyage (fermeture de fichiers, connexions...)</li>
+                    <li>Les blocs sont optionnels mais fortement recommandés</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Section Lever des exceptions -->
+        <section id="raise" class="section-card">
+            <h2 class="mb-4"><i class="bi bi-arrow-up-circle text-primary me-2"></i>Lever des Exceptions</h2>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="code-container mb-4">
+                        <pre><code class="language-python">def calcul_racine_carree(x):
+    if x < 0:
+        raise ValueError("Le nombre ne peut pas être négatif")
+    return x ** 0.5
+
+try:
+    racine = calcul_racine_carree(-4)
+except ValueError as e:
+    print(f"Erreur: {e}")</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle-fill"></i> Utilisez <code>raise</code> pour signaler des conditions exceptionnelles dans votre code.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="p-4 bg-light rounded">
+                        <h5><i class="bi bi-list-check"></i> Quand lever une exception ?</h5>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Conditions non valides</li>
+                            <li class="list-group-item">Violation des préconditions</li>
+                            <li class="list-group-item">Échec d'opération critique</li>
+                        </ul>
+                        
+                        <div class="mt-3 p-3 bg-white rounded">
+                            <h6>Exemple concret :</h6>
+                            <p>Validation d'une adresse email :</p>
+                            <pre><code class="language-python">if "@" not in email:
+    raise ValueError("Format d'email invalide")</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Gestionnaires de contexte -->
+        <section id="context" class="section-card">
+            <h2 class="mb-4"><i class="bi bi-folder-symlink text-primary me-2"></i>Gestionnaires de Contexte</h2>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="code-container mb-4">
+                        <pre><code class="language-python"># Avec gestionnaire de contexte
+with open("fichier.txt") as f:
+    contenu = f.read()
+    # Le fichier est fermé automatiquement
+
+# Equivalent traditionnel
+try:
+    f = open("fichier.txt")
+    contenu = f.read()
+finally:
+    f.close()</code></pre>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="alert alert-success">
+                        <i class="bi bi-check-circle-fill"></i> Les gestionnaires de contexte simplifient la gestion des ressources.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="p-4 bg-light rounded">
+                        <h5><i class="bi bi-gear-fill"></i> Fonctionnement interne</h5>
+                        <p>Un gestionnaire de contexte implémente deux méthodes :</p>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><code>__enter__()</code> - Exécuté au début du bloc</li>
+                            <li class="list-group-item"><code>__exit__()</code> - Exécuté à la fin, même en cas d'erreur</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Pied de page -->
+    <footer class="bg-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="bi bi-book"></i> Ressources</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="https://docs.python.org/3/tutorial/errors.html" target="_blank">Documentation Python</a></li>
+                        <li><a href="https://realpython.com/python-exceptions/" target="_blank">Guide Real Python</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p class="text-muted"> 2025 - Formation POO Python</p>
+                    <p class="text-muted">OFPPT - Développement Digital</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.27.0/components/prism-python.min.js"></script>
+</body>
+</html>

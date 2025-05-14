@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Exceptions personnalisées en Python</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fonction pour dessiner une flèche d'héritage
+        function drawInheritanceArrow(fromX, fromY, toX, toY) {
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+            
+            // Triangle pour l'héritage (pointe vers le parent)
+            const angle = Math.atan2(fromY - toY, fromX - toX);
+            const arrowSize = 8;
+            
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle - Math.PI/6),
+                toY - arrowSize * Math.sin(angle - Math.PI/6)
+            );
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle + Math.PI/6),
+                toY - arrowSize * Math.sin(angle + Math.PI/6)
+            );
+            ctx.closePath();
+            ctx.fillStyle = '#666';
+            ctx.fill();
+        }
+        
+        // Fonction pour dessiner une classe
+        function drawClass(x, y, width, height, name, attributes, methods, color = '#f1f1f1', stroke = '#999') {
+            // Dessiner le rectangle principal
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 2;
+            roundRect(x, y, width, height);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Dessiner le nom de la classe
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(name, x + width/2, y + 25);
+            
+            // Ligne séparatrice pour les attributs
+            ctx.beginPath();
+            ctx.moveTo(x, y + 40);
+            ctx.lineTo(x + width, y + 40);
+            ctx.stroke();
+            
+            // Attributs
+            ctx.font = '14px Arial';
+            ctx.textAlign = 'left';
+            let attrY = y + 60;
+            if (attributes && attributes.length > 0) {
+                attributes.forEach(attr => {
+                    ctx.fillText(attr, x + 10, attrY);
+                    attrY += 20;
+                });
+            }
+            
+            // Ligne séparatrice pour les méthodes
+            const methodStartY = Math.max(attrY, y + 70);
+            ctx.beginPath();
+            ctx.moveTo(x, methodStartY - 10);
+            ctx.lineTo(x + width, methodStartY - 10);
+            ctx.stroke();
+            
+            // Méthodes
+            let methodY = methodStartY + 10;
+            if (methods && methods.length > 0) {
+                methods.forEach(method => {
+                    ctx.fillText(method, x + 10, methodY);
+                    methodY += 20;
+                });
+            }
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Création d\'Exceptions Personnalisées en Python', canvas.width/2, 40);
+        
+        // Classes d'exception
+        const baseWidth = 280;
+        const baseHeight = 120;
+        
+        // Exception de base (built-in)
+        drawClass(
+            canvas.width/2 - baseWidth/2, 
+            80, 
+            baseWidth, 
+            baseHeight, 
+            'Exception', 
+            ['args : tuple'],
+            ['__init__(self, *args)', '__str__(self)'],
+            '#e8f4fd', 
+            '#3498db'
+        );
+        
+        // Exception personnalisée simple
+        drawClass(
+            150, 
+            250, 
+            baseWidth, 
+            baseHeight, 
+            'MonException', 
+            ['args : tuple'],
+            ['__init__(self, *args)'],
+            '#e8f7f2', 
+            '#27ae60'
+        );
+        
+        // Exception personnalisée avancée
+        drawClass(
+            450, 
+            250, 
+            baseWidth, 
+            baseHeight + 40, 
+            'ErreurProduit', 
+            ['code : int', 'message : str', 'produit_id : str'],
+            ['__init__(self, code, msg, produit_id)', '__str__(self)'],
+            '#fef5e9', 
+            '#e67e22'
+        );
+        
+        // Flèches d'héritage
+        drawInheritanceArrow(150 + baseWidth/2, 250, canvas.width/2, 80 + baseHeight);
+        drawInheritanceArrow(450 + baseWidth/2, 250, canvas.width/2, 80 + baseHeight);
+        
+        // Exemple de code pour l'exception simple
+        const codeX = 50;
+        const codeY = 380;
+        const codeWidth = 340;
+        const codeHeight = 110;
+        
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(codeX, codeY, codeWidth, codeHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Exception simple :', codeX + 10, codeY + 20);
+        
+        ctx.font = '14px Consolas, monospace';
+        const code = [
+            'class MonException(Exception):',
+            '    """Exception levée pour mes erreurs spécifiques"""',
+            '    pass',
+            '',
+            'try:',
+            '    raise MonException("Une erreur s\'est produite")',
+            'except MonException as e:',
+            '    print(f"Capturée: {e}")'
+        ];
+        
+        code.forEach((line, i) => {
+            ctx.fillText(line, codeX + 10, codeY + 45 + i * 16);
+        });
+        
+        // Exemple de code pour l'exception avancée
+        const code2X = 410;
+        const code2Y = 380;
+        const code2Width = 350;
+        const code2Height = 110;
+        
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(code2X, code2Y, code2Width, code2Height);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Exception avancée :', code2X + 10, code2Y + 20);
+        
+        ctx.font = '14px Consolas, monospace';
+        const code2 = [
+            'class ErreurProduit(Exception):',
+            '    def __init__(self, code, msg, produit_id):',
+            '        self.code = code',
+            '        self.message = msg',
+            '        self.produit_id = produit_id',
+            '        ',
+            '    def __str__(self):',
+            '        return f"[{self.code}] {self.message} ({self.produit_id})"'
+        ];
+        
+        code2.forEach((line, i) => {
+            ctx.fillText(line, code2X + 10, code2Y + 45 + i * 16);
+        });
+        
+        // Points clés
+        ctx.fillStyle = '#f3e7ff';
+        ctx.strokeStyle = '#9b59b6';
+        const keysX = 100;
+        const keysY = 170;
+        const keysWidth = 600;
+        const keysHeight = 50;
+        roundRect(keysX, keysY, keysWidth, keysHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Avantages des exceptions personnalisées :', keysX + keysWidth/2, keysY + 20);
+        
+        ctx.font = '14px Arial';
+        ctx.fillText('Organisation du code • Communication claire des erreurs • Gestion précise des erreurs', keysX + keysWidth/2, keysY + 40);
+    </script>
+</body>
+</html>

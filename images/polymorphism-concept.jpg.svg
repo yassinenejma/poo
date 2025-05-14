@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="400">
+    <style>
+        .title { font: bold 36px Arial; fill: white; }
+        .desc { font: 18px Arial; fill: white; }
+        .bg1 { fill: #3498db; }
+        .bg2 { fill: #e74c3c; }
+        .bg3 { fill: #2ecc71; }
+        .bg4 { fill: #9b59b6; }
+        .bg5 { fill: #f39c12; }
+    </style>
+    <rect width="100%" height="100%" class="bg1" />
+    <text x="400" y="150" text-anchor="middle" class="title">Concept du Polymorphisme</text>
+    <text x="400" y="200" text-anchor="middle" class="desc">Image illustrant le concept en POO</text>
+</svg>

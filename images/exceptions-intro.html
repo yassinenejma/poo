@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Introduction aux Exceptions</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Fonctionnement des Exceptions en Python', canvas.width/2, 40);
+        
+        // Exécution normale vs exception
+        const boxWidth = 300;
+        const boxHeight = 250;
+        const boxMargin = 50;
+        
+        // Schéma d'exécution normale
+        ctx.fillStyle = '#e8f7f2';
+        ctx.strokeStyle = '#2ecc71';
+        ctx.lineWidth = 2;
+        roundRect(boxMargin, 80, boxWidth, boxHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#27ae60';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Exécution Normale', boxMargin + boxWidth/2, 110);
+        
+        // Flèches d'exécution normale
+        ctx.strokeStyle = '#2ecc71';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        
+        const x1 = boxMargin + boxWidth/2;
+        let y = 130;
+        
+        // Dessin des étapes normales
+        const steps = [
+            "Début du programme",
+            "Instruction 1",
+            "Instruction 2",
+            "Instruction 3",
+            "Fin du programme"
+        ];
+        
+        const stepHeight = 30;
+        const stepGap = 10;
+        
+        ctx.font = '14px Arial';
+        
+        steps.forEach((step, i) => {
+            const yPos = y + i * (stepHeight + stepGap);
+            
+            // Flèche
+            if (i > 0) {
+                ctx.beginPath();
+                ctx.moveTo(x1, yPos - stepGap);
+                ctx.lineTo(x1, yPos);
+                ctx.stroke();
+                
+                // Pointe de flèche
+                ctx.beginPath();
+                ctx.moveTo(x1, yPos);
+                ctx.lineTo(x1 - 5, yPos - 10);
+                ctx.lineTo(x1 + 5, yPos - 10);
+                ctx.closePath();
+                ctx.fillStyle = '#2ecc71';
+                ctx.fill();
+            }
+            
+            // Texte de l'étape
+            ctx.fillStyle = '#333';
+            ctx.fillText(step, x1, yPos + stepHeight/2);
+        });
+        
+        // Schéma avec exception
+        ctx.fillStyle = '#fef5e9';
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 2;
+        roundRect(2 * boxMargin + boxWidth, 80, boxWidth, boxHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#c0392b';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Exécution avec Exception', 2 * boxMargin + boxWidth + boxWidth/2, 110);
+        
+        // Flèches d'exécution avec exception
+        ctx.strokeStyle = '#e74c3c';
+        ctx.lineWidth = 3;
+        ctx.beginPath();
+        
+        const x2 = 2 * boxMargin + boxWidth + boxWidth/2;
+        y = 130;
+        
+        // Dessin des étapes avec exception
+        const stepsException = [
+            "Début du programme",
+            "Instruction 1",
+            "EXCEPTION!",
+            "Gestionnaire d'exception",
+            "Fin du programme"
+        ];
+        
+        stepsException.forEach((step, i) => {
+            const yPos = y + i * (stepHeight + stepGap);
+            
+            // Flèche
+            if (i > 0) {
+                ctx.beginPath();
+                ctx.moveTo(x2, yPos - stepGap);
+                ctx.lineTo(x2, yPos);
+                ctx.stroke();
+                
+                // Pointe de flèche
+                ctx.beginPath();
+                ctx.moveTo(x2, yPos);
+                ctx.lineTo(x2 - 5, yPos - 10);
+                ctx.lineTo(x2 + 5, yPos - 10);
+                ctx.closePath();
+                ctx.fillStyle = '#e74c3c';
+                ctx.fill();
+            }
+            
+            // Texte de l'étape
+            ctx.fillStyle = i === 2 ? '#e74c3c' : '#333';
+            ctx.font = i === 2 ? 'bold 14px Arial' : '14px Arial';
+            ctx.fillText(step, x2, yPos + stepHeight/2);
+            
+            // Cercle autour de l'exception
+            if (i === 2) {
+                ctx.strokeStyle = '#e74c3c';
+                ctx.beginPath();
+                ctx.ellipse(x2, yPos + stepHeight/2 - 5, 80, 20, 0, 0, Math.PI * 2);
+                ctx.stroke();
+                
+                // Flèche courbée vers le gestionnaire
+                ctx.beginPath();
+                ctx.moveTo(x2 + 80, yPos + stepHeight/2 - 5);
+                ctx.quadraticCurveTo(x2 + 100, yPos + 30, x2, yPos + 40);
+                ctx.stroke();
+            }
+        });
+        
+        // Explication
+        ctx.fillStyle = '#333';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText("Les exceptions interrompent le flux normal d'exécution", canvas.width/2, 350);
+        ctx.fillText("et redirigent vers un code de gestion d'erreurs spécifique", canvas.width/2, 375);
+    </script>
+</body>
+</html>

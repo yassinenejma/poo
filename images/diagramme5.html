@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bonnes Pratiques du Polymorphisme</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Bonnes Pratiques du Polymorphisme en POO', canvas.width/2, 40);
+        
+        // Principe de substitution de Liskov
+        ctx.fillStyle = '#e8f7f2';
+        ctx.strokeStyle = '#2ecc71';
+        ctx.lineWidth = 2;
+        roundRect(30, 70, 350, 180);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#27ae60';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Principe de Substitution de Liskov', 205, 95);
+        
+        // Diagramme Liskov
+        ctx.fillStyle = '#3498db';
+        ctx.strokeStyle = '#2980b9';
+        roundRect(70, 120, 120, 30);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Forme', 130, 140);
+        
+        // Ligne verticale
+        ctx.strokeStyle = '#333';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(130, 150);
+        ctx.lineTo(130, 170);
+        ctx.stroke();
+        
+        // Rectangle
+        ctx.fillStyle = '#2ecc71';
+        ctx.strokeStyle = '#27ae60';
+        roundRect(70, 170, 120, 30);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('Rectangle', 130, 190);
+        
+        // Ligne verticale
+        ctx.strokeStyle = '#333';
+        ctx.beginPath();
+        ctx.moveTo(130, 200);
+        ctx.lineTo(130, 220);
+        ctx.stroke();
+        
+        // Carré
+        ctx.fillStyle = '#e74c3c';
+        ctx.strokeStyle = '#c0392b';
+        roundRect(70, 220, 120, 30);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('Carré', 130, 240);
+        
+        // Explication Liskov
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'left';
+        
+        const liskovText = [
+            "Les objets d'une classe dérivée doivent",
+            "pouvoir remplacer les objets de la",
+            "classe de base sans affecter le",
+            "comportement du programme."
+        ];
+        
+        liskovText.forEach((line, i) => {
+            ctx.fillText(line, 205, 135 + i * 20);
+        });
+        
+        // Composition vs Héritage
+        ctx.fillStyle = '#fef5e9';
+        ctx.strokeStyle = '#f39c12';
+        roundRect(420, 70, 350, 180);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#e67e22';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Composition vs Héritage', 595, 95);
+        
+        // Diagramme Composition
+        ctx.fillStyle = '#3498db';
+        ctx.strokeStyle = '#2980b9';
+        roundRect(450, 120, 120, 50);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Voiture', 510, 140);
+        ctx.font = '12px Arial';
+        ctx.fillText('a un Moteur', 510, 160);
+        
+        // Ligne pointillée
+        ctx.strokeStyle = '#333';
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(510, 170);
+        ctx.lineTo(510, 200);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        
+        // Classe Moteur
+        ctx.fillStyle = '#e74c3c';
+        ctx.strokeStyle = '#c0392b';
+        roundRect(450, 200, 120, 50);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('Moteur', 510, 220);
+        ctx.font = '12px Arial';
+        ctx.fillText('démarrer()', 510, 240);
+        
+        // Explication Composition
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Arial';
+        ctx.textAlign = 'left';
+        
+        const compText = [
+            "Préférer la composition à l'héritage",
+            "quand c'est possible, pour plus de",
+            "flexibilité et éviter les hiérarchies",
+            "d'héritage trop complexes."
+        ];
+        
+        compText.forEach((line, i) => {
+            ctx.fillText(line, 580, 135 + i * 20);
+        });
+        
+        // Duck Typing
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(30, 270, 350, 180);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#2980b9';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Duck Typing en Python', 205, 295);
+        
+        // Code exemple Duck Typing
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(50, 320, 310, 120);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        
+        const duckCode = [
+            'def faire_nager(animal):',
+            '    if hasattr(animal, "nager"):',
+            '        animal.nager()',
+            '',
+            '# Fonctionne avec tout objet ayant',
+            '# une méthode "nager", quelle que',
+            '# soit sa classe'
+        ];
+        
+        duckCode.forEach((line, i) => {
+            ctx.fillText(line, 60, 340 + i * 20);
+        });
+        
+        // Classes abstraites
+        ctx.fillStyle = '#f4e9fe';
+        ctx.strokeStyle = '#9b59b6';
+        roundRect(420, 270, 350, 180);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#8e44ad';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Classes abstraites', 595, 295);
+        
+        // Code exemple classe abstraite
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(440, 320, 310, 120);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        
+        const absCode = [
+            'from abc import ABC, abstractmethod',
+            'class FormeAbstraite(ABC):',
+            '    @abstractmethod',
+            '    def aire(self):',
+            '        pass',
+            '',
+            '# Les classes dérivées doivent',
+            '# implémenter cette méthode'
+        ];
+        
+        absCode.forEach((line, i) => {
+            ctx.fillText(line, 450, 340 + i * 20);
+        });
+        
+        // Note de conclusion
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(30, 470, 740, 30);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#2980b9';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Le polymorphisme bien conçu favorise l\'extensibilité et la maintenabilité du code', 400, 490);
+    </script>
+</body>
+</html>

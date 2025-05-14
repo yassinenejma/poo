@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="600" height="450" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond -->
+  <rect width="600" height="450" fill="#f8f9fa" rx="10" ry="10"/>
+  
+  <!-- Titre -->
+  <text x="300" y="40" font-family="Arial" font-size="20" font-weight="bold" text-anchor="middle" fill="#2c3e50">Meilleures pratiques pour les exceptions en Python</text>
+  
+  <!-- Bonnes pratiques -->
+  <text x="150" y="80" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#27ae60">À FAIRE</text>
+  
+  <rect x="50" y="100" width="200" height="60" fill="#e8f7f2" stroke="#27ae60" stroke-width="2" rx="5" ry="5"/>
+  <text x="70" y="125" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✓ Être spécifique</text>
+  <text x="70" y="145" font-family="Arial" font-size="12" text-anchor="start">Capturez des exceptions spécifiques</text>
+  
+  <rect x="50" y="170" width="200" height="60" fill="#e8f7f2" stroke="#27ae60" stroke-width="2" rx="5" ry="5"/>
+  <text x="70" y="195" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✓ Gérer correctement</text>
+  <text x="70" y="215" font-family="Arial" font-size="12" text-anchor="start">Ne pas ignorer silencieusement</text>
+  
+  <rect x="50" y="240" width="200" height="60" fill="#e8f7f2" stroke="#27ae60" stroke-width="2" rx="5" ry="5"/>
+  <text x="70" y="265" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✓ Créer des exceptions</text>
+  <text x="70" y="285" font-family="Arial" font-size="12" text-anchor="start">Pour les erreurs spécifiques</text>
+  
+  <rect x="50" y="310" width="200" height="60" fill="#e8f7f2" stroke="#27ae60" stroke-width="2" rx="5" ry="5"/>
+  <text x="70" y="335" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✓ Utiliser finally ou with</text>
+  <text x="70" y="355" font-family="Arial" font-size="12" text-anchor="start">Pour libérer les ressources</text>
+  
+  <!-- Mauvaises pratiques -->
+  <text x="450" y="80" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="#e74c3c">À ÉVITER</text>
+  
+  <rect x="350" y="100" width="200" height="60" fill="#fdeaef" stroke="#e74c3c" stroke-width="2" rx="5" ry="5"/>
+  <text x="370" y="125" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✗ Capturer Exception</text>
+  <text x="370" y="145" font-family="Arial" font-size="12" text-anchor="start">Trop générique, difficile à déboguer</text>
+  
+  <rect x="350" y="170" width="200" height="60" fill="#fdeaef" stroke="#e74c3c" stroke-width="2" rx="5" ry="5"/>
+  <text x="370" y="195" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✗ Passer silencieusement</text>
+  <text x="370" y="215" font-family="Arial" font-size="12" text-anchor="start">except: pass est dangereux</text>
+  
+  <rect x="350" y="240" width="200" height="60" fill="#fdeaef" stroke="#e74c3c" stroke-width="2" rx="5" ry="5"/>
+  <text x="370" y="265" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✗ Mélanger exceptions et</text>
+  <text x="370" y="285" font-family="Arial" font-size="12" text-anchor="start">flot de contrôle normal</text>
+  
+  <rect x="350" y="310" width="200" height="60" fill="#fdeaef" stroke="#e74c3c" stroke-width="2" rx="5" ry="5"/>
+  <text x="370" y="335" font-family="Arial" font-size="14" font-weight="bold" text-anchor="start">✗ Capturer au mauvais niveau</text>
+  <text x="370" y="355" font-family="Arial" font-size="12" text-anchor="start">Respectez l'abstraction</text>
+  
+  <!-- Conseil supplémentaire -->
+  <rect x="50" y="390" width="500" height="40" fill="#f3e7ff" stroke="#9b59b6" stroke-width="2" rx="5" ry="5"/>
+  <text x="300" y="415" font-family="Arial" font-size="14" font-weight="bold" text-anchor="middle">Python favorise le style EAFP: "Easier to Ask Forgiveness than Permission"</text>
+</svg>

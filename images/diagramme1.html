@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Concept du Polymorphisme</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour dessiner une classe
+        function drawClass(x, y, width, height, title, methods, color) {
+            // Rectangle principal
+            ctx.fillStyle = color;
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.roundRect(x, y, width, height, 5);
+            ctx.fill();
+            ctx.stroke();
+            
+            // Titre
+            ctx.fillStyle = 'white';
+            ctx.font = 'bold 16px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(title, x + width/2, y + 25);
+            
+            // Ligne de séparation
+            ctx.beginPath();
+            ctx.moveTo(x, y + 35);
+            ctx.lineTo(x + width, y + 35);
+            ctx.stroke();
+            
+            // Méthodes
+            ctx.font = '14px Arial';
+            methods.forEach((method, index) => {
+                ctx.fillText(method, x + width/2, y + 55 + index * 20);
+            });
+        }
+        
+        // Fonction pour dessiner une flèche d'héritage
+        function drawInheritanceArrow(fromX, fromY, toX, toY) {
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+            
+            // Flèche
+            const arrowSize = 10;
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(toX - arrowSize * Math.cos(angle - Math.PI/6), toY - arrowSize * Math.sin(angle - Math.PI/6));
+            ctx.lineTo(toX - arrowSize * Math.cos(angle + Math.PI/6), toY - arrowSize * Math.sin(angle + Math.PI/6));
+            ctx.closePath();
+            ctx.fillStyle = '#333';
+            ctx.fill();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Le Concept du Polymorphisme en POO', canvas.width/2, 40);
+        
+        // Classe abstraite Forme
+        drawClass(300, 80, 200, 80, 'Forme (Classe Abstraite)', ['aire()', 'périmètre()'], '#3498db');
+        
+        // Flèches d'héritage
+        const baseX = 400;
+        const baseY = 160;
+        
+        // Ligne verticale depuis Forme
+        ctx.beginPath();
+        ctx.moveTo(baseX, baseY);
+        ctx.lineTo(baseX, baseY + 30);
+        ctx.stroke();
+        
+        // Ligne horizontale
+        ctx.beginPath();
+        ctx.moveTo(150, baseY + 30);
+        ctx.lineTo(650, baseY + 30);
+        ctx.stroke();
+        
+        // Lignes verticales vers les sous-classes
+        for (let x of [150, 400, 650]) {
+            ctx.beginPath();
+            ctx.moveTo(x, baseY + 30);
+            ctx.lineTo(x, baseY + 60);
+            ctx.stroke();
+        }
+        
+        // Classes dérivées
+        drawClass(50, 220, 200, 100, 'Cercle', ['aire() { π × r² }', 'périmètre() { 2 × π × r }'], '#2ecc71');
+        drawClass(300, 220, 200, 100, 'Rectangle', ['aire() { longueur × largeur }', 'périmètre() { 2(l + L) }'], '#e74c3c');
+        drawClass(550, 220, 200, 100, 'Triangle', ['aire() { formule de Héron }', 'périmètre() { a + b + c }'], '#9b59b6');
+        
+        // Explication
+        ctx.fillStyle = '#333';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Le polymorphisme permet d\'appeler la même méthode (aire(), périmètre())', canvas.width/2, 360);
+        ctx.fillText('sur différentes classes dérivées, chacune fournissant sa propre implémentation.', canvas.width/2, 390);
+        
+        // Exemple de code
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.roundRect(150, 420, 500, 60, 5);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        ctx.fillText('def calculer_aire(forme):', 170, 445);
+        ctx.fillText('    return forme.aire()  # Appel polymorphique, fonctionne pour toute classe Forme', 170, 465);
+    </script>
+</body>
+</html>

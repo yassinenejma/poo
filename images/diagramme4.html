@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Polymorphisme Paramétrique</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Polymorphisme Paramétrique (Génériques)', canvas.width/2, 40);
+        
+        // Classe générique Stack<T>
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 2;
+        roundRect(175, 70, 450, 180);
+        ctx.fill();
+        ctx.stroke();
+        
+        // En-tête de classe
+        ctx.fillStyle = '#3498db';
+        ctx.strokeStyle = '#2980b9';
+        roundRect(175, 70, 450, 40);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('class Stack<T>:', 400, 95);
+        
+        // Contenu de la classe
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        
+        const methods = [
+            "def __init__(self):",
+            "    self.items: List[T] = []    # Liste générique de type T",
+            "",
+            "def push(self, item: T) -> None:",
+            "    self.items.append(item)    # Accepte n'importe quel type T",
+            "",
+            "def pop(self) -> T:",
+            "    return self.items.pop()    # Retourne le type T"
+        ];
+        
+        methods.forEach((line, i) => {
+            ctx.fillText(line, 190, 125 + i * 20);
+        });
+        
+        // Instanciation avec int
+        ctx.fillStyle = '#e8f7f2';
+        ctx.strokeStyle = '#2ecc71';
+        roundRect(100, 280, 280, 140);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#27ae60';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Stack<int>', 240, 305);
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        
+        const intCode = [
+            "stack_int = Stack[int]()",
+            "stack_int.push(1)",
+            "stack_int.push(2)",
+            "result = stack_int.pop()  # result: int"
+        ];
+        
+        intCode.forEach((line, i) => {
+            ctx.fillText(line, 120, 335 + i * 20);
+        });
+        
+        // Instanciation avec string
+        ctx.fillStyle = '#fef5e9';
+        ctx.strokeStyle = '#f39c12';
+        roundRect(420, 280, 280, 140);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#e67e22';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Stack<string>', 560, 305);
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        
+        const strCode = [
+            "stack_str = Stack[str]()",
+            "stack_str.push('Hello')",
+            "stack_str.push('World')",
+            "result = stack_str.pop()  # result: str"
+        ];
+        
+        strCode.forEach((line, i) => {
+            ctx.fillText(line, 440, 335 + i * 20);
+        });
+        
+        // Explication
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(100, 440, 600, 40);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Le même code fonctionne avec différents types sans duplication de code', 400, 465);
+        
+        // Dessiner une pile
+        function drawStack(x, y, items, color, textColor) {
+            items.forEach((item, i) => {
+                // Rectangle
+                ctx.fillStyle = color;
+                ctx.strokeStyle = textColor;
+                ctx.lineWidth = 1;
+                roundRect(x, y + i * 30, 60, 30);
+                ctx.fill();
+                ctx.stroke();
+                
+                // Texte
+                ctx.fillStyle = textColor;
+                ctx.font = 'bold 16px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(item, x + 30, y + i * 30 + 20);
+            });
+        }
+        
+        // Dessiner les représentations visuelles des piles
+        drawStack(330, 335, ["2", "1"], "#2ecc71", "white");
+        drawStack(650, 335, ["World", "Hello"], "#f39c12", "white");
+    </script>
+</body>
+</html>

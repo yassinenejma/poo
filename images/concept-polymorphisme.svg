@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond -->
+  <rect width="800" height="400" fill="#f8f9fa" />
+  
+  <!-- Titre -->
+  <text x="400" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">Le Concept du Polymorphisme</text>
+  
+  <!-- Diagramme principal -->
+  <g transform="translate(50, 80)">
+    <!-- Classes et formes -->
+    <rect x="250" y="20" width="200" height="60" rx="5" fill="#3498db" stroke="#2980b9" stroke-width="2" />
+    <text x="350" y="55" font-family="Arial" font-size="18" font-weight="bold" text-anchor="middle" fill="white">Forme (Class Abstraite)</text>
+    <text x="350" y="75" font-family="Arial" font-size="14" text-anchor="middle" fill="white">aire(), périmètre()</text>
+    
+    <!-- Flèches d'héritage -->
+    <line x1="350" y1="80" x2="350" y2="110" stroke="#333" stroke-width="2" />
+    <line x1="150" y1="110" x2="550" y2="110" stroke="#333" stroke-width="2" />
+    <line x1="150" y1="110" x2="150" y2="140" stroke="#333" stroke-width="2" />
+    <line x1="350" y1="110" x2="350" y2="140" stroke="#333" stroke-width="2" />
+    <line x1="550" y1="110" x2="550" y2="140" stroke="#333" stroke-width="2" />
+    
+    <!-- Classes enfants -->
+    <rect x="50" y="140" width="200" height="80" rx="5" fill="#2ecc71" stroke="#27ae60" stroke-width="2" />
+    <text x="150" y="170" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Cercle</text>
+    <text x="150" y="195" font-family="Arial" font-size="14" text-anchor="middle" fill="white">aire() { π × r² }</text>
+    <text x="150" y="215" font-family="Arial" font-size="14" text-anchor="middle" fill="white">périmètre() { 2 × π × r }</text>
+    
+    <rect x="260" y="140" width="200" height="80" rx="5" fill="#e74c3c" stroke="#c0392b" stroke-width="2" />
+    <text x="360" y="170" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Rectangle</text>
+    <text x="360" y="195" font-family="Arial" font-size="14" text-anchor="middle" fill="white">aire() { longueur × largeur }</text>
+    <text x="360" y="215" font-family="Arial" font-size="14" text-anchor="middle" fill="white">périmètre() { 2(l + L) }</text>
+    
+    <rect x="470" y="140" width="200" height="80" rx="5" fill="#9b59b6" stroke="#8e44ad" stroke-width="2" />
+    <text x="570" y="170" font-family="Arial" font-size="16" font-weight="bold" text-anchor="middle" fill="white">Triangle</text>
+    <text x="570" y="195" font-family="Arial" font-size="14" text-anchor="middle" fill="white">aire() { formule de Héron }</text>
+    <text x="570" y="215" font-family="Arial" font-size="14" text-anchor="middle" fill="white">périmètre() { a + b + c }</text>
+  </g>
+  
+  <!-- Code Python et explication -->
+  <g transform="translate(50, 280)">
+    <rect x="0" y="0" width="700" height="80" rx="5" fill="#f1f1f1" stroke="#ddd" stroke-width="1" />
+    <text x="350" y="30" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">Le polymorphisme permet d'appeler la même méthode (aire(), périmètre())</text>
+    <text x="350" y="55" font-family="Arial" font-size="16" text-anchor="middle" fill="#333">sur différents objets, chaque classe implémentant son propre comportement</text>
+  </g>
+</svg>

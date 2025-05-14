@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fond -->
+  <rect width="800" height="400" fill="#f8f9fa" />
+  
+  <!-- Titre -->
+  <text x="400" y="40" font-family="Arial" font-size="24" font-weight="bold" text-anchor="middle" fill="#2c3e50">Polymorphisme Ad Hoc (Surcharge)</text>
+  
+  <!-- Diagramme principal -->
+  <g transform="translate(40, 70)">
+    <!-- Classe Vector -->
+    <rect x="100" y="20" width="600" height="220" rx="5" fill="#f1f1f1" stroke="#ddd" stroke-width="2" />
+    <rect x="100" y="20" width="600" height="40" rx="5" fill="#3498db" stroke="#2980b9" stroke-width="2" />
+    <text x="400" y="45" font-family="Consolas, monospace" font-size="18" font-weight="bold" text-anchor="middle" fill="white">class Vector</text>
+    
+    <!-- Méthodes -->
+    <text x="120" y="85" font-family="Consolas, monospace" font-size="14" fill="#333">def __init__(self, x, y):</text>
+    <text x="140" y="105" font-family="Consolas, monospace" font-size="14" fill="#333">self.x = x</text>
+    <text x="140" y="125" font-family="Consolas, monospace" font-size="14" fill="#333">self.y = y</text>
+    
+    <text x="120" y="155" font-family="Consolas, monospace" font-size="14" fill="#333">def __add__(self, other): # Surcharge de l'opérateur +</text>
+    <text x="140" y="175" font-family="Consolas, monospace" font-size="14" fill="#333">return Vector(self.x + other.x, self.y + other.y)</text>
+    
+    <text x="120" y="205" font-family="Consolas, monospace" font-size="14" fill="#333">def __mul__(self, scalar): # Surcharge de l'opérateur *</text>
+    <text x="140" y="225" font-family="Consolas, monospace" font-size="14" fill="#333">return Vector(self.x * scalar, self.y * scalar)</text>
+  </g>
+  
+  <!-- Exemple d'utilisation -->
+  <g transform="translate(40, 300)">
+    <rect x="100" y="0" width="600" height="80" rx="5" fill="#e8f4fd" stroke="#3498db" stroke-width="2" />
+    
+    <text x="120" y="25" font-family="Consolas, monospace" font-size="14" fill="#333">v1 = Vector(2, 3)</text>
+    <text x="120" y="45" font-family="Consolas, monospace" font-size="14" fill="#333">v2 = Vector(5, 1)</text>
+    <text x="120" y="65" font-family="Consolas, monospace" font-size="14" fill="#333">v3 = v1 + v2    # Utilise __add__ → Vector(7, 4)</text>
+    
+    <text x="400" y="25" font-family="Consolas, monospace" font-size="14" fill="#333">v4 = v1 * 3     # Utilise __mul__ → Vector(6, 9)</text>
+    
+    <!-- Explication -->
+    <text x="400" y="65" font-family="Arial" font-size="14" font-style="italic" fill="#666">Les opérateurs sont surchargés pour travailler avec des objets Vector</text>
+  </g>
+</svg>

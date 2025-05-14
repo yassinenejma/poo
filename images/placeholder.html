@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Image Placeholders</title>
+    <style>
+        body { margin: 0; padding: 0; }
+        .placeholder {
+            width: 800px;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .placeholder h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+        .placeholder p {
+            font-size: 18px;
+            max-width: 70%;
+        }
+        .concept { background: linear-gradient(135deg, #3498db, #2c3e50); }
+        .overloading { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+        .inheritance { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+        .parametric { background: linear-gradient(135deg, #9b59b6, #8e44ad); }
+        .practices { background: linear-gradient(135deg, #f39c12, #d35400); }
+    </style>
+</head>
+<body>
+    <div id="polymorphism-concept" class="placeholder concept">
+        <h2>Le Concept du Polymorphisme</h2>
+        <p>La capacité d'objets de classes différentes à répondre au même message de façon spécifique à leur type</p>
+        <svg width="200" height="150" viewBox="0 0 200 150">
+            <circle cx="50" cy="75" r="30" fill="#ecf0f1" />
+            <rect x="120" y="45" width="60" height="60" fill="#ecf0f1" />
+            <polygon points="50,30 80,100 20,100" fill="#3498db" />
+            <rect x="120" y="45" width="60" height="30" fill="#2ecc71" />
+            <text x="50" y="80" text-anchor="middle" fill="#333" font-family="Arial">f()</text>
+            <text x="150" y="80" text-anchor="middle" fill="#333" font-family="Arial">f()</text>
+        </svg>
+    </div>
+    
+    <div id="operator-overloading" class="placeholder overloading">
+        <h2>Polymorphisme Ad Hoc</h2>
+        <p>Surcharge d'opérateurs et de fonctions selon le type ou le nombre de paramètres</p>
+        <svg width="300" height="100" viewBox="0 0 300 100">
+            <text x="20" y="40" font-family="monospace" fill="#ecf0f1" font-size="14">Vector + Vector = Vector</text>
+            <text x="20" y="70" font-family="monospace" fill="#ecf0f1" font-size="14">String + String = String</text>
+            <text x="20" y="100" font-family="monospace" fill="#ecf0f1" font-size="14">Number + Number = Number</text>
+        </svg>
+    </div>
+    
+    <div id="inheritance-polymorphism" class="placeholder inheritance">
+        <h2>Polymorphisme de Sous-type</h2>
+        <p>Redéfinition des méthodes dans les classes dérivées via l'héritage</p>
+        <svg width="200" height="150" viewBox="0 0 200 150">
+            <rect x="75" y="10" width="50" height="30" rx="5" fill="#ecf0f1" />
+            <text x="100" y="30" text-anchor="middle" fill="#333" font-family="Arial">Animal</text>
+            <line x1="100" y1="40" x2="100" y2="60" stroke="#ecf0f1" stroke-width="2" />
+            <line x1="50" y1="60" x2="150" y2="60" stroke="#ecf0f1" stroke-width="2" />
+            <line x1="50" y1="60" x2="50" y2="70" stroke="#ecf0f1" stroke-width="2" />
+            <line x1="100" y1="60" x2="100" y2="70" stroke="#ecf0f1" stroke-width="2" />
+            <line x1="150" y1="60" x2="150" y2="70" stroke="#ecf0f1" stroke-width="2" />
+            <rect x="25" y="70" width="50" height="30" rx="5" fill="#ecf0f1" />
+            <rect x="75" y="70" width="50" height="30" rx="5" fill="#ecf0f1" />
+            <rect x="125" y="70" width="50" height="30" rx="5" fill="#ecf0f1" />
+            <text x="50" y="90" text-anchor="middle" fill="#333" font-family="Arial">Chien</text>
+            <text x="100" y="90" text-anchor="middle" fill="#333" font-family="Arial">Chat</text>
+            <text x="150" y="90" text-anchor="middle" fill="#333" font-family="Arial">Oiseau</text>
+        </svg>
+    </div>
+    
+    <div id="parametric-polymorphism" class="placeholder parametric">
+        <h2>Polymorphisme Paramétrique</h2>
+        <p>Utilisation de types génériques pour manipuler différents types de données</p>
+        <svg width="300" height="120" viewBox="0 0 300 120">
+            <rect x="100" y="10" width="100" height="40" rx="5" fill="#ecf0f1" />
+            <text x="150" y="35" text-anchor="middle" fill="#333" font-family="Arial">Stack&lt;T&gt;</text>
+            <line x1="150" y1="50" x2="150" y2="70" stroke="#ecf0f1" stroke-width="2" />
+            <line x1="100" y1="70" x2="200" y2="70" stroke="#ecf0f1" stroke-width="2" />
+            <line x1="100" y1="70" x2="100" y2="80" stroke="#ecf0f1" stroke-width="2" />
+            <line x1="200" y1="70" x2="200" y2="80" stroke="#ecf0f1" stroke-width="2" />
+            <rect x="50" y="80" width="100" height="30" rx="5" fill="#ecf0f1" />
+            <rect x="170" y="80" width="100" height="30" rx="5" fill="#ecf0f1" />
+            <text x="100" y="100" text-anchor="middle" fill="#333" font-family="Arial">Stack&lt;int&gt;</text>
+            <text x="220" y="100" text-anchor="middle" fill="#333" font-family="Arial">Stack&lt;string&gt;</text>
+        </svg>
+    </div>
+    
+    <div id="best-practices" class="placeholder practices">
+        <h2>Bonnes Pratiques</h2>
+        <p>Principes et techniques pour utiliser efficacement le polymorphisme</p>
+        <svg width="300" height="120" viewBox="0 0 300 120">
+            <circle cx="150" cy="60" r="50" fill="none" stroke="#ecf0f1" stroke-width="3" />
+            <line x1="120" y1="40" x2="180" y2="80" stroke="#ecf0f1" stroke-width="3" />
+            <line x1="120" y1="80" x2="180" y2="40" stroke="#ecf0f1" stroke-width="3" />
+            <rect x="110" y="40" width="80" height="40" rx="5" fill="#f39c12" opacity="0.7" />
+            <text x="150" y="65" text-anchor="middle" fill="#ecf0f1" font-family="Arial" font-weight="bold">Liskov</text>
+        </svg>
+    </div>
+</body>
+</html>

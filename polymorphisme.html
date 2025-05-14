@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Le Polymorphisme en Programmation Orientée Objet</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Le Polymorphisme en POO</h1>
+            <p class="subtitle">Un concept fondamental de la Programmation Orientée Objet</p>
+        </div>
+    </header>
+
+    <nav class="table-of-contents">
+        <div class="container">
+            <h2>Sommaire</h2>
+            <ul>
+                <li><a href="#introduction">Introduction au Polymorphisme</a></li>
+                <li><a href="#types">Types de Polymorphisme</a></li>
+                <li><a href="#ad-hoc">Polymorphisme ad hoc</a></li>
+                <li><a href="#subtype">Polymorphisme de sous-type</a></li>
+                <li><a href="#parametric">Polymorphisme paramétrique</a></li>
+                <li><a href="#examples">Exemples pratiques en Python</a></li>
+                <li><a href="#avantages">Avantages et inconvénients</a></li>
+                <li><a href="#best-practices">Bonnes pratiques</a></li>
+                <li><a href="#conclusion">Conclusion</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            <section id="introduction" class="section">
+                <h2>Introduction au Polymorphisme</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Le polymorphisme est l'un des quatre piliers fondamentaux de la programmation orientée objet (POO), aux côtés de l'<strong>encapsulation</strong>, de l'<strong>héritage</strong> et de l'<strong>abstraction</strong>.</p>
+                        
+                        <p>Le terme "polymorphisme" vient du grec <em>poly</em> (plusieurs) et <em>morph</em> (forme), signifiant littéralement "plusieurs formes". En programmation, cela se traduit par la capacité d'objets de différentes classes à répondre au même message ou méthode de manière spécifique à leur type.</p>
+                        
+                        <p>En d'autres termes, le polymorphisme permet à des objets de types différents d'être traités via une interface commune, tout en se comportant différemment selon leur nature propre.</p>
+                    </div>
+                    <div class="image-content">
+                        <iframe src="images/diagramme1.html" width="100%" height="500" frameborder="0" class="concept-image"></iframe>
+                        <p class="image-caption">Figure 1: Diagramme explicatif du concept de polymorphisme avec différentes classes dérivées</p>
+                    </div>
+                </div>
+            </section>
+            
+            <section id="types" class="section">
+                <h2>Types de Polymorphisme</h2>
+                <p>Il existe principalement trois types de polymorphisme en programmation orientée objet :</p>
+                <div class="types-grid">
+                    <div class="type-card">
+                        <h3>Ad hoc</h3>
+                        <p>Surcharge des fonctions et des opérateurs</p>
+                        <a href="#ad-hoc" class="btn">En savoir plus</a>
+                    </div>
+                    <div class="type-card">
+                        <h3>De sous-type</h3>
+                        <p>Basé sur l'héritage et la redéfinition de méthodes</p>
+                        <a href="#subtype" class="btn">En savoir plus</a>
+                    </div>
+                    <div class="type-card">
+                        <h3>Paramétrique</h3>
+                        <p>Utilisation de génériques et templates</p>
+                        <a href="#parametric" class="btn">En savoir plus</a>
+                    </div>
+                </div>
+            </section>
+
+            <section id="ad-hoc" class="section">
+                <h2>Polymorphisme Ad Hoc</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Le polymorphisme ad hoc, également appelé surcharge (overloading), permet à une fonction ou un opérateur d'avoir différents comportements selon le type ou le nombre de paramètres qu'il reçoit.</p>
+                        
+                        <p>En Python, la surcharge d'opérateurs est réalisée en implémentant des <strong>méthodes spéciales</strong> (ou méthodes magiques) dans une classe.</p>
+                        
+                        <div class="code-block">
+                            <h4>Exemple de surcharge d'opérateurs en Python</h4>
+                            <pre><code class="language-python">class Vector:
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        
+    def __str__(self):
+        return f"Vector({self.x}, {self.y})"
+        
+    # Surcharge de l'opérateur + 
+    def __add__(self, other):
+        return Vector(self.x + other.x, self.y + other.y)
+        
+    # Surcharge de l'opérateur * pour la multiplication par un scalaire
+    def __mul__(self, scalar):
+        return Vector(self.x * scalar, self.y * scalar)
+    
+# Utilisation
+v1 = Vector(2, 3)
+v2 = Vector(5, 1)
+
+v3 = v1 + v2      # Utilise __add__
+print(v3)         # Affiche: Vector(7, 4)
+
+v4 = v1 * 3       # Utilise __mul__
+print(v4)         # Affiche: Vector(6, 9)</code></pre>
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="image-content">
+                        <iframe src="images/diagramme2.html" width="100%" height="400" frameborder="0" class="concept-image"></iframe>
+                        <p class="image-caption">Figure 2: Illustration de la surcharge d'opérateurs avec des vecteurs</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="subtype" class="section">
+                <h2>Polymorphisme de Sous-type</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Le polymorphisme de sous-type est la forme la plus commune de polymorphisme en POO. Il est basé sur l'héritage et permet à une classe enfant de redéfinir des méthodes de sa classe parente.</p>
+                        
+                        <p>Ce type de polymorphisme permet de manipuler des objets de différentes classes dérivées via leur référence de classe de base commune, tout en garantissant un comportement spécifique à chaque sous-classe.</p>
+                        
+                        <div class="code-block">
+                            <h4>Exemple de polymorphisme de sous-type en Python</h4>
+                            <pre><code class="language-python">class Animal:
+    def faire_son(self):
+        pass  # Méthode à redéfinir dans les classes dérivées
+    
+    def se_deplacer(self):
+        pass  # Méthode à redéfinir dans les classes dérivées
+    
+class Chien(Animal):
+    def faire_son(self):
+        return "Woof!"
+    
+    def se_deplacer(self):
+        return "Le chien court"
+    
+class Chat(Animal):
+    def faire_son(self):
+        return "Meow!"
+    
+    def se_deplacer(self):
+        return "Le chat bondit"
+    
+class Oiseau(Animal):
+    def faire_son(self):
+        return "Cui-cui!"
+    
+    def se_deplacer(self):
+        return "L'oiseau vole"
+
+# Fonction qui utilise le polymorphisme
+def comportement_animal(animal):
+    print(f"Son: {animal.faire_son()}")
+    print(f"Déplacement: {animal.se_deplacer()}")
+
+# Utilisation avec différentes sous-classes
+animaux = [Chien(), Chat(), Oiseau()]
+
+for animal in animaux:
+    comportement_animal(animal)
+    print("-" * 20)</code></pre>
+                        </div>
+                        
+                        <p>Dans cet exemple, <code>comportement_animal()</code> fonctionne avec n'importe quel objet qui est une instance d'<code>Animal</code> ou de ses sous-classes. Chaque sous-classe fournit sa propre implémentation des méthodes <code>faire_son()</code> et <code>se_deplacer()</code>.</p>
+                    </div>
+                    <div class="image-content">
+                        <iframe src="images/diagramme3.html" width="100%" height="500" frameborder="0" class="concept-image"></iframe>
+                        <p class="image-caption">Figure 3: Hiérarchie des classes et redéfinition des méthodes héritées</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="parametric" class="section">
+                <h2>Polymorphisme Paramétrique</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <p>Le polymorphisme paramétrique, également connu sous le nom de programmation générique, permet d'écrire du code qui peut fonctionner avec différents types de données sans avoir à les spécifier explicitement.</p>
+                        
+                        <p>En Python, ce type de polymorphisme est implicite en raison de son typage dynamique. Toutefois, avec l'introduction des annotations de type (PEP 484), Python supporte désormais aussi une forme explicite de polymorphisme paramétrique.</p>
+                        
+                        <div class="code-block">
+                            <h4>Exemple de polymorphisme paramétrique en Python</h4>
+                            <pre><code class="language-python">from typing import TypeVar, List, Generic
+
+T = TypeVar('T')  # Définition d'un type générique T
+
+class Stack(Generic[T]):
+    def __init__(self):
+        self.items: List[T] = []
+    
+    def push(self, item: T) -> None:
+        self.items.append(item)
+    
+    def pop(self) -> T:
+        if not self.items:
+            raise IndexError("Stack is empty")
+        return self.items.pop()
+    
+    def peek(self) -> T:
+        if not self.items:
+            raise IndexError("Stack is empty")
+        return self.items[-1]
+    
+    def is_empty(self) -> bool:
+        return len(self.items) == 0
+
+# Utilisation avec différents types
+stack_int = Stack[int]()
+stack_int.push(1)
+stack_int.push(2)
+print(stack_int.pop())  # Affiche: 2
+
+stack_str = Stack[str]()
+stack_str.push("Hello")
+stack_str.push("World")
+print(stack_str.pop())  # Affiche: World</code></pre>
+                        </div>
+                        
+                        <p>Bien que Python soit un langage à typage dynamique et que les annotations de type ci-dessus soient principalement utilisées pour les vérifications statiques (par exemple avec mypy), elles illustrent le concept de polymorphisme paramétrique.</p>
+                    </div>
+                    <div class="image-content">
+                        <iframe src="images/diagramme4.html" width="100%" height="500" frameborder="0" class="concept-image"></iframe>
+                        <p class="image-caption">Figure 4: Classes génériques et instanciation avec différents types</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="examples" class="section">
+                <h2>Exemples Pratiques en Python</h2>
+                
+                <div class="example-card">
+                    <h3>Exemple 1: Application de gestion de formes géométriques</h3>
+                    <div class="code-block">
+                        <pre><code class="language-python">import math
+
+class Forme:
+    def aire(self):
+        pass
+    
+    def perimetre(self):
+        pass
+    
+    def description(self):
+        return f"Je suis une forme avec une aire de {self.aire()} et un périmètre de {self.perimetre()}"
+
+class Cercle(Forme):
+    def __init__(self, rayon):
+        self.rayon = rayon
+    
+    def aire(self):
+        return math.pi * self.rayon ** 2
+    
+    def perimetre(self):
+        return 2 * math.pi * self.rayon
+    
+    def description(self):
+        return f"Je suis un cercle de rayon {self.rayon}"
+
+class Rectangle(Forme):
+    def __init__(self, longueur, largeur):
+        self.longueur = longueur
+        self.largeur = largeur
+    
+    def aire(self):
+        return self.longueur * self.largeur
+    
+    def perimetre(self):
+        return 2 * (self.longueur + self.largeur)
+    
+    def description(self):
+        return f"Je suis un rectangle de dimensions {self.longueur}x{self.largeur}"
+
+class Triangle(Forme):
+    def __init__(self, a, b, c):
+        self.a = a
+        self.b = b
+        self.c = c
+    
+    def aire(self):
+        # Formule de Héron
+        s = (self.a + self.b + self.c) / 2
+        return math.sqrt(s * (s - self.a) * (s - self.b) * (s - self.c))
+    
+    def perimetre(self):
+        return self.a + self.b + self.c
+    
+    def description(self):
+        return f"Je suis un triangle avec des côtés de {self.a}, {self.b} et {self.c}"
+
+# Fonction utilisant le polymorphisme
+def afficher_infos_forme(forme):
+    print(forme.description())
+    print(f"Aire: {forme.aire():.2f}")
+    print(f"Périmètre: {forme.perimetre():.2f}")
+    print("-" * 30)
+
+# Création et utilisation des formes
+formes = [
+    Cercle(5),
+    Rectangle(4, 6),
+    Triangle(3, 4, 5)
+]
+
+for forme in formes:
+    afficher_infos_forme(forme)</code></pre>
+                    </div>
+                </div>
+                
+                <div class="example-card">
+                    <h3>Exemple 2: Système de paiement</h3>
+                    <div class="code-block">
+                        <pre><code class="language-python">from abc import ABC, abstractmethod
+from datetime import datetime
+
+class MethodePaiement(ABC):
+    @abstractmethod
+    def payer(self, montant):
+        pass
+    
+    @abstractmethod
+    def details(self):
+        pass
+
+class CarteBancaire(MethodePaiement):
+    def __init__(self, numero, date_expiration, cvv):
+        self.numero = numero
+        self.date_expiration = date_expiration
+        self.cvv = cvv
+    
+    def payer(self, montant):
+        # Simulation de paiement par carte
+        print(f"Paiement de {montant}€ effectué par carte bancaire")
+        print(f"Numéro: **** **** **** {self.numero[-4:]}")
+        return True
+    
+    def details(self):
+        return f"Carte bancaire se terminant par {self.numero[-4:]}"
+
+class PayPal(MethodePaiement):
+    def __init__(self, email):
+        self.email = email
+    
+    def payer(self, montant):
+        # Simulation de paiement PayPal
+        print(f"Paiement de {montant}€ effectué via PayPal")
+        print(f"Compte: {self.email}")
+        return True
+    
+    def details(self):
+        return f"Compte PayPal: {self.email}"
+
+class Virement(MethodePaiement):
+    def __init__(self, iban, bic):
+        self.iban = iban
+        self.bic = bic
+    
+    def payer(self, montant):
+        # Simulation de virement bancaire
+        print(f"Virement de {montant}€ initié")
+        print(f"IBAN: {self.iban[:4]}... BIC: {self.bic}")
+        return True
+    
+    def details(self):
+        return f"Virement bancaire (IBAN: {self.iban[:4]}...)"
+
+# Classe utilisant le polymorphisme
+class SystemePaiement:
+    def __init__(self):
+        self.historique = []
+    
+    def effectuer_paiement(self, methode, montant):
+        print(f"\n--- Traitement du paiement à {datetime.now().strftime('%H:%M:%S')} ---")
+        succes = methode.payer(montant)
+        
+        if succes:
+            self.historique.append({
+                "date": datetime.now(),
+                "montant": montant,
+                "methode": methode.details(),
+                "statut": "Réussi"
+            })
+            return True
+        else:
+            self.historique.append({
+                "date": datetime.now(),
+                "montant": montant,
+                "methode": methode.details(),
+                "statut": "Échoué"
+            })
+            return False
+    
+    def afficher_historique(self):
+        print("\n=== Historique des paiements ===")
+        for transaction in self.historique:
+            print(f"{transaction['date'].strftime('%d/%m/%Y %H:%M:%S')} | "
+                  f"{transaction['montant']}€ | "
+                  f"{transaction['methode']} | "
+                  f"{transaction['statut']}")
+
+# Utilisation du système de paiement
+systeme = SystemePaiement()
+
+# Différentes méthodes de paiement
+carte = CarteBancaire("1234567890123456", "12/25", "123")
+paypal = PayPal("client@example.com")
+virement = Virement("FR7612345678901234567890123", "BNPAFRPP")
+
+# Effectuer des paiements avec différentes méthodes
+systeme.effectuer_paiement(carte, 99.99)
+systeme.effectuer_paiement(paypal, 49.99)
+systeme.effectuer_paiement(virement, 199.99)
+
+# Afficher l'historique
+systeme.afficher_historique()</code></pre>
+                    </div>
+                </div>
+            </section>
+
+            <section id="avantages" class="section">
+                <h2>Avantages et Inconvénients</h2>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h3>Avantages</h3>
+                        <ul>
+                            <li><strong>Flexibilité</strong> : permet d'adapter le comportement d'une application en fonction des types concrets utilisés</li>
+                            <li><strong>Extensibilité</strong> : facilite l'ajout de nouvelles fonctionnalités sans modifier le code existant</li>
+                            <li><strong>Réutilisabilité</strong> : favorise la création de composants génériques qui fonctionnent avec différents types</li>
+                            <li><strong>Maintenabilité</strong> : simplifie la structure du code en éliminant les conditions complexes basées sur le type</li>
+                            <li><strong>Abstraction</strong> : permet de manipuler des objets via leurs interfaces abstraites plutôt que leurs implémentations concrètes</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Inconvénients</h3>
+                        <ul>
+                            <li><strong>Complexité</strong> : peut rendre le code plus difficile à comprendre pour les débutants</li>
+                            <li><strong>Performances</strong> : la résolution dynamique de méthodes peut entraîner une légère perte de performance</li>
+                            <li><strong>Débogage</strong> : le comportement polymorphique peut parfois compliquer le débogage</li>
+                            <li><strong>Surconception</strong> : risque de créer des hiérarchies de classes trop complexes</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <section id="best-practices" class="section">
+                <h2>Bonnes Pratiques</h2>
+                <div class="content-wrapper">
+                    <div class="text-content">
+                        <div class="best-practice">
+                            <h3>Principe de substitution de Liskov</h3>
+                            <p>Une instance d'une classe dérivée doit pouvoir être utilisée partout où une instance de la classe de base est attendue, sans altérer le comportement attendu du programme.</p>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Préférer la composition à l'héritage</h3>
+                            <p>Lorsque cela est possible, utilisez la composition d'objets plutôt que l'héritage pour obtenir un comportement polymorphique plus flexible.</p>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Utiliser des classes abstraites et des interfaces</h3>
+                            <p>En Python, utilisez les classes abstraites (module abc) pour définir des interfaces claires que les classes concrètes doivent implémenter.</p>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Duck Typing</h3>
+                            <p>Profitez du duck typing en Python : "Si ça marche comme un canard et ça fait coin-coin comme un canard, alors c'est probablement un canard." Concentrez-vous sur le comportement plutôt que sur le type.</p>
+                        </div>
+                        
+                        <div class="best-practice">
+                            <h3>Ne pas abuser de la surcharge</h3>
+                            <p>Évitez de surcharger les opérateurs ou les méthodes d'une manière qui n'est pas intuitive ou qui va à l'encontre des attentes habituelles.</p>
+                        </div>
+                    </div>
+                    <div class="image-content">
+                        <iframe src="images/diagramme5.html" width="100%" height="500" frameborder="0" class="concept-image"></iframe>
+                        <p class="image-caption">Figure 5: Principes et bonnes pratiques pour un polymorphisme efficace</p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="conclusion" class="section">
+                <h2>Conclusion</h2>
+                <div class="conclusion-wrapper">
+                    <p>Le polymorphisme est un concept fondamental en programmation orientée objet qui offre une grande flexibilité et puissance dans la conception de logiciels. En permettant à des objets de différentes classes de répondre au même message de manière spécifique, il favorise la création d'architectures modulaires, extensibles et maintenables.</p>
+                    
+                    <p>En Python, le polymorphisme se manifeste naturellement grâce au typage dynamique et au duck typing, mais peut également être mis en œuvre de manière plus structurée à travers l'héritage, les interfaces et les annotations de type.</p>
+                    
+                    <p>En maîtrisant les différentes formes de polymorphisme et en suivant les bonnes pratiques, vous pourrez concevoir des systèmes plus élégants et robustes, capables d'évoluer avec les besoins changeants de vos applications.</p>
+                    
+                    <div class="key-takeaways">
+                        <h3>Points clés à retenir</h3>
+                        <ul>
+                            <li>Le polymorphisme permet de manipuler différents types d'objets via une interface commune</li>
+                            <li>Il existe trois types principaux: ad hoc (surcharge), de sous-type (héritage) et paramétrique (génériques)</li>
+                            <li>Le polymorphisme favorise l'extensibilité et la réutilisabilité du code</li>
+                            <li>En Python, le duck typing offre une forme naturelle de polymorphisme</li>
+                            <li>Suivez le principe de substitution de Liskov pour un polymorphisme bien conçu</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 OFPPT - Formation Développement Digital</p>
+            <p>Cours sur le Polymorphisme en Programmation Orientée Objet</p>
+        </div>
+    </footer>
+    
+    <!-- Ajout des scripts JS en fin de page -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/plugins/autoloader/prism-autoloader.min.js"></script>
+</body>
+</html>

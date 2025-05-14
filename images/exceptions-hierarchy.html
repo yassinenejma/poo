@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Hiérarchie des Exceptions Python</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fonction pour dessiner une classe d'exception
+        function drawException(x, y, width, height, name, color, stroke) {
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 2;
+            roundRect(x, y, width, height);
+            ctx.fill();
+            ctx.stroke();
+            
+            ctx.fillStyle = '#333';
+            ctx.font = 'bold 14px Arial';
+            ctx.textAlign = 'center';
+            ctx.fillText(name, x + width/2, y + height/2 + 5);
+        }
+        
+        // Fonction pour dessiner une flèche d'héritage
+        function drawInheritanceArrow(fromX, fromY, toX, toY) {
+            ctx.strokeStyle = '#666';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+            
+            // Triangle pour l'héritage (pointe vers le parent)
+            const angle = Math.atan2(fromY - toY, fromX - toX);
+            const arrowSize = 8;
+            
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle - Math.PI/6),
+                toY - arrowSize * Math.sin(angle - Math.PI/6)
+            );
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle + Math.PI/6),
+                toY - arrowSize * Math.sin(angle + Math.PI/6)
+            );
+            ctx.closePath();
+            ctx.fillStyle = '#666';
+            ctx.fill();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Hiérarchie des Exceptions en Python', canvas.width/2, 40);
+        
+        // Hiérarchie des exceptions
+        // Niveau 1
+        const baseWidth = 180;
+        const baseHeight = 40;
+        const baseX = canvas.width/2 - baseWidth/2;
+        const baseY = 80;
+        
+        drawException(baseX, baseY, baseWidth, baseHeight, 'BaseException', '#f1f1f1', '#999');
+        
+        // Niveau 2
+        const level2Y = baseY + baseHeight + 30;
+        const level2Width = 160;
+        const level2Height = 35;
+        const level2Exceptions = [
+            { name: 'Exception', x: canvas.width/2 - level2Width/2, color: '#e8f4fd', stroke: '#3498db' },
+            { name: 'SystemExit', x: baseX - 220, color: '#eee', stroke: '#999' },
+            { name: 'KeyboardInterrupt', x: baseX + 220, color: '#eee', stroke: '#999' }
+        ];
+        
+        level2Exceptions.forEach(exc => {
+            drawException(exc.x, level2Y, level2Width, level2Height, exc.name, exc.color, exc.stroke);
+            drawInheritanceArrow(exc.x + level2Width/2, level2Y, baseX + baseWidth/2, baseY + baseHeight);
+        });
+        
+        // Niveau 3 - Sous-exceptions de Exception
+        const level3Y = level2Y + level2Height + 30;
+        const level3Width = 140;
+        const level3Height = 30;
+        const level3Exceptions = [
+            { name: 'StopIteration', x: 50, color: '#e8f7f2', stroke: '#27ae60' },
+            { name: 'ArithmeticError', x: 200, color: '#e8f7f2', stroke: '#27ae60' },
+            { name: 'LookupError', x: 350, color: '#e8f7f2', stroke: '#27ae60' },
+            { name: 'AssertionError', x: 500, color: '#e8f7f2', stroke: '#27ae60' },
+            { name: 'AttributeError', x: 650, color: '#e8f7f2', stroke: '#27ae60' }
+        ];
+        
+        level3Exceptions.forEach(exc => {
+            drawException(exc.x, level3Y, level3Width, level3Height, exc.name, exc.color, exc.stroke);
+            drawInheritanceArrow(exc.x + level3Width/2, level3Y, level2Exceptions[0].x + level2Width/2, level2Y + level2Height);
+        });
+        
+        // Niveau 4 - Sous-exceptions d'ArithmeticError
+        const level4Y = level3Y + level3Height + 30;
+        const level4Width = 140;
+        const level4Height = 30;
+        const level4ArithmeticExceptions = [
+            { name: 'ZeroDivisionError', x: 100, color: '#fef5e9', stroke: '#e67e22' },
+            { name: 'OverflowError', x: 250, color: '#fef5e9', stroke: '#e67e22' }
+        ];
+        
+        level4ArithmeticExceptions.forEach(exc => {
+            drawException(exc.x, level4Y, level4Width, level4Height, exc.name, exc.color, exc.stroke);
+            drawInheritanceArrow(exc.x + level4Width/2, level4Y, level3Exceptions[1].x + level3Width/2, level3Y + level3Height);
+        });
+        
+        // Niveau 4 - Sous-exceptions de LookupError
+        const level4LookupExceptions = [
+            { name: 'IndexError', x: 400, color: '#fef5e9', stroke: '#e67e22' },
+            { name: 'KeyError', x: 550, color: '#fef5e9', stroke: '#e67e22' }
+        ];
+        
+        level4LookupExceptions.forEach(exc => {
+            drawException(exc.x, level4Y, level4Width, level4Height, exc.name, exc.color, exc.stroke);
+            drawInheritanceArrow(exc.x + level4Width/2, level4Y, level3Exceptions[2].x + level3Width/2, level3Y + level3Height);
+        });
+        
+        // Niveau 5 - Autres exceptions importantes
+        const level5Y = level4Y + level4Height + 30;
+        const level5Width = 150;
+        const level5Height = 30;
+        const level5Exceptions = [
+            { name: 'ValueError', x: 100, color: '#fdeaef', stroke: '#e74c3c' },
+            { name: 'TypeError', x: 260, color: '#fdeaef', stroke: '#e74c3c' },
+            { name: 'RuntimeError', x: 420, color: '#fdeaef', stroke: '#e74c3c' },
+            { name: 'IOError', x: 580, color: '#fdeaef', stroke: '#e74c3c' }
+        ];
+        
+        level5Exceptions.forEach(exc => {
+            drawException(exc.x, level5Y, level5Width, level5Height, exc.name, exc.color, exc.stroke);
+            drawInheritanceArrow(exc.x + level5Width/2, level5Y, level2Exceptions[0].x + level2Width/2, level2Y + level2Height);
+        });
+        
+        // Légende
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(canvas.width - 200, canvas.height - 80, 180, 65);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Légende:', canvas.width - 190, canvas.height - 60);
+        
+        ctx.font = '12px Arial';
+        ctx.fillText('→ représente l\'héritage', canvas.width - 190, canvas.height - 40);
+        ctx.fillText('Les classes peuvent être', canvas.width - 190, canvas.height - 25);
+        ctx.fillText('étendues par l\'utilisateur', canvas.width - 190, canvas.height - 10);
+    </script>
+</body>
+</html>

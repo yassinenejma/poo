@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bloc try-except en Python</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="500"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fonction pour dessiner une flèche
+        function drawArrow(fromX, fromY, toX, toY, color = '#333') {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+            
+            // Triangle de la flèche
+            const angle = Math.atan2(toY - fromY, toX - fromX);
+            const arrowSize = 10;
+            
+            ctx.beginPath();
+            ctx.moveTo(toX, toY);
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle - Math.PI/6),
+                toY - arrowSize * Math.sin(angle - Math.PI/6)
+            );
+            ctx.lineTo(
+                toX - arrowSize * Math.cos(angle + Math.PI/6),
+                toY - arrowSize * Math.sin(angle + Math.PI/6)
+            );
+            ctx.closePath();
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+        
+        // Fonction pour dessiner un losange de décision
+        function drawDiamond(x, y, width, height, color = '#f1f1f1', stroke = '#999') {
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 2;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y + height/2);  // Gauche
+            ctx.lineTo(x + width/2, y);   // Haut
+            ctx.lineTo(x + width, y + height/2);  // Droite
+            ctx.lineTo(x + width/2, y + height);  // Bas
+            ctx.closePath();
+            
+            ctx.fill();
+            ctx.stroke();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Fonctionnement du Bloc try-except', canvas.width/2, 40);
+        
+        // Diagramme de flux
+        const startX = canvas.width/2;
+        const startY = 80;
+        
+        // Début
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        ctx.lineWidth = 2;
+        roundRect(startX - 60, startY, 120, 40);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Début', startX, startY + 25);
+        
+        // Bloc try
+        const tryY = startY + 80;
+        ctx.fillStyle = '#e8f7f2';
+        ctx.strokeStyle = '#27ae60';
+        roundRect(startX - 100, tryY, 200, 50);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('try:', startX, tryY + 25);
+        ctx.font = '14px Arial';
+        ctx.fillText('Bloc de code surveillé', startX, tryY + 45);
+        
+        // Flèche de début à try
+        drawArrow(startX, startY + 40, startX, tryY);
+        
+        // Losange de décision (exception?)
+        const decisionY = tryY + 100;
+        drawDiamond(startX - 80, decisionY, 160, 60, '#fef5e9', '#e67e22');
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('Exception', startX, decisionY + 20);
+        ctx.fillText('levée ?', startX, decisionY + 40);
+        
+        // Flèche de try à décision
+        drawArrow(startX, tryY + 50, startX, decisionY);
+        
+        // Bloc except
+        const exceptX = startX + 180;
+        const exceptY = decisionY + 20;
+        ctx.fillStyle = '#fdeaef';
+        ctx.strokeStyle = '#e74c3c';
+        roundRect(exceptX - 100, exceptY, 200, 50);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('except:', exceptX, exceptY + 25);
+        ctx.font = '14px Arial';
+        ctx.fillText('Gestion de l\'exception', exceptX, exceptY + 45);
+        
+        // Flèche de décision à except (Oui)
+        drawArrow(startX + 80, decisionY + 30, exceptX - 100, exceptY + 25, '#e74c3c');
+        ctx.fillStyle = '#e74c3c';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Oui', startX + 120, decisionY + 15);
+        
+        // Continuation normale (Non)
+        const continueX = startX - 180;
+        const continueY = decisionY + 20;
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(continueX - 100, continueY, 200, 50);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('Poursuite normale', continueX, continueY + 30);
+        
+        // Flèche de décision à continuation (Non)
+        drawArrow(startX - 80, decisionY + 30, continueX + 100, continueY + 25, '#27ae60');
+        ctx.fillStyle = '#27ae60';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Non', startX - 120, decisionY + 15);
+        
+        // Fin
+        const endY = decisionY + 150;
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(startX - 60, endY, 120, 40);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('Fin', startX, endY + 25);
+        
+        // Flèches vers la fin
+        drawArrow(continueX, continueY + 50, startX - 30, endY);
+        drawArrow(exceptX, exceptY + 50, startX + 30, endY);
+        
+        // Exemple de code
+        const codeX = 50;
+        const codeY = 350;
+        const codeWidth = 350;
+        const codeHeight = 130;
+        
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(codeX, codeY, codeWidth, codeHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Exemple de code :', codeX + 10, codeY + 20);
+        
+        ctx.font = '14px Consolas, monospace';
+        const code = [
+            'try:',
+            '    resultat = 10 / 0  # ZeroDivisionError',
+            'except ZeroDivisionError:',
+            '    print("Division par zéro !")',
+            '    resultat = "Erreur"',
+            '',
+            'print(f"Résultat: {resultat}")'
+        ];
+        
+        code.forEach((line, i) => {
+            ctx.fillText(line, codeX + 10, codeY + 45 + i * 18);
+        });
+        
+        // Explication
+        const explainX = 450;
+        const explainY = 350;
+        const explainWidth = 300;
+        const explainHeight = 130;
+        
+        ctx.fillStyle = '#e8f7f2';
+        ctx.strokeStyle = '#27ae60';
+        roundRect(explainX, explainY, explainWidth, explainHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Points clés :', explainX + 10, explainY + 20);
+        
+        ctx.font = '14px Arial';
+        const points = [
+            '• Le bloc try tente d\'exécuter du code',
+            '• Si une exception est levée, le flux',
+            '  d\'exécution va au bloc except',
+            '• Si le type d\'exception correspond,',
+            '  le gestionnaire d\'exception s\'exécute',
+            '• Le programme reprend après le bloc'
+        ];
+        
+        points.forEach((point, i) => {
+            ctx.fillText(point, explainX + 10, explainY + 45 + i * 18);
+        });
+    </script>
+</body>
+</html>

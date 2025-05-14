@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Polymorphisme Ad Hoc</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Polymorphisme Ad Hoc (Surcharge d\'Opérateurs)', canvas.width/2, 40);
+        
+        // Classe Vector
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        ctx.lineWidth = 2;
+        roundRect(100, 70, 600, 220);
+        ctx.fill();
+        ctx.stroke();
+        
+        // En-tête de classe
+        ctx.fillStyle = '#3498db';
+        ctx.strokeStyle = '#2980b9';
+        roundRect(100, 70, 600, 40);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 18px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('class Vector:', 400, 95);
+        
+        // Contenu de la classe
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        ctx.textAlign = 'left';
+        
+        const methods = [
+            "def __init__(self, x, y):",
+            "    self.x = x",
+            "    self.y = y",
+            "",
+            "def __add__(self, other):    # Surcharge de l'opérateur +",
+            "    return Vector(self.x + other.x, self.y + other.y)",
+            "",
+            "def __mul__(self, scalar):   # Surcharge de l'opérateur *",
+            "    return Vector(self.x * scalar, self.y * scalar)"
+        ];
+        
+        methods.forEach((line, i) => {
+            ctx.fillText(line, 120, 130 + i * 20);
+        });
+        
+        // Exemple d'utilisation
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(100, 300, 600, 80);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = '14px Consolas, monospace';
+        
+        const examples = [
+            "v1 = Vector(2, 3)",
+            "v2 = Vector(5, 1)",
+            "v3 = v1 + v2    # Utilise __add__ → Vector(7, 4)",
+            "v4 = v1 * 3     # Utilise __mul__ → Vector(6, 9)"
+        ];
+        
+        examples.forEach((line, i) => {
+            ctx.fillText(line, 120, 325 + i * 20);
+        });
+    </script>
+</body>
+</html>

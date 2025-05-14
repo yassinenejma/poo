@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Flux d'exécution try-except-else-finally</title>
+    <style>
+        body { margin: 0; padding: 0; font-family: Arial, sans-serif; }
+        canvas { max-width: 100%; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <canvas id="diagramCanvas" width="800" height="600"></canvas>
+    <script>
+        const canvas = document.getElementById('diagramCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Fonction pour créer des rectangles arrondis
+        function roundRect(x, y, width, height, radius) {
+            ctx.beginPath();
+            ctx.moveTo(x + radius, y);
+            ctx.lineTo(x + width - radius, y);
+            ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+            ctx.lineTo(x + width, y + height - radius);
+            ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+            ctx.lineTo(x + radius, y + height);
+            ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+            ctx.lineTo(x, y + radius);
+            ctx.quadraticCurveTo(x, y, x + radius, y);
+            ctx.closePath();
+        }
+        
+        // Fonction pour dessiner une flèche
+        function drawArrow(fromX, fromY, toX, toY, color = '#333', text = '', textColor = '#333', isLine = false, isDashed = false) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            
+            if (isDashed) {
+                ctx.setLineDash([5, 3]);
+            } else {
+                ctx.setLineDash([]);
+            }
+            
+            ctx.beginPath();
+            ctx.moveTo(fromX, fromY);
+            ctx.lineTo(toX, toY);
+            ctx.stroke();
+            
+            // Triangle de la flèche (sauf si c'est une simple ligne)
+            if (!isLine) {
+                const angle = Math.atan2(toY - fromY, toX - fromX);
+                const arrowSize = 10;
+                
+                ctx.beginPath();
+                ctx.moveTo(toX, toY);
+                ctx.lineTo(
+                    toX - arrowSize * Math.cos(angle - Math.PI/6),
+                    toY - arrowSize * Math.sin(angle - Math.PI/6)
+                );
+                ctx.lineTo(
+                    toX - arrowSize * Math.cos(angle + Math.PI/6),
+                    toY - arrowSize * Math.sin(angle + Math.PI/6)
+                );
+                ctx.closePath();
+                ctx.fillStyle = color;
+                ctx.fill();
+            }
+            
+            // Texte sur la flèche
+            if (text) {
+                const midX = (fromX + toX) / 2;
+                const midY = (fromY + toY) / 2;
+                const offset = 15;
+                
+                ctx.fillStyle = textColor;
+                ctx.font = 'bold 12px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText(text, midX, midY - offset);
+            }
+            
+            // Réinitialiser le style de ligne
+            ctx.setLineDash([]);
+        }
+        
+        // Fonction pour dessiner un losange de décision
+        function drawDiamond(x, y, width, height, color = '#f1f1f1', stroke = '#999') {
+            ctx.fillStyle = color;
+            ctx.strokeStyle = stroke;
+            ctx.lineWidth = 2;
+            
+            ctx.beginPath();
+            ctx.moveTo(x, y + height/2);  // Gauche
+            ctx.lineTo(x + width/2, y);   // Haut
+            ctx.lineTo(x + width, y + height/2);  // Droite
+            ctx.lineTo(x + width/2, y + height);  // Bas
+            ctx.closePath();
+            
+            ctx.fill();
+            ctx.stroke();
+        }
+        
+        // Fond
+        ctx.fillStyle = '#f8f9fa';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        // Titre
+        ctx.fillStyle = '#2c3e50';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Flux d\'exécution try-except-else-finally', canvas.width/2, 40);
+        
+        // Constants pour le positionnement
+        const centerX = canvas.width / 2;
+        const startY = 80;
+        const boxWidth = 200;
+        const boxHeight = 50;
+        const vertSpace = 70;
+        
+        // Début
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        ctx.lineWidth = 2;
+        roundRect(centerX - 60, startY, 120, 40);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.textAlign = 'center';
+        ctx.fillText('Début', centerX, startY + 25);
+        
+        // Bloc try
+        const tryY = startY + vertSpace;
+        ctx.fillStyle = '#e8f7f2';
+        ctx.strokeStyle = '#27ae60';
+        roundRect(centerX - boxWidth/2, tryY, boxWidth, boxHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('try:', centerX, tryY + 20);
+        ctx.font = '14px Arial';
+        ctx.fillText('Bloc de code surveillé', centerX, tryY + 40);
+        
+        // Flèche de début à try
+        drawArrow(centerX, startY + 40, centerX, tryY);
+        
+        // Losange de décision (exception?)
+        const decisionY = tryY + vertSpace + 20;
+        drawDiamond(centerX - 80, decisionY, 160, 60, '#fef5e9', '#e67e22');
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.fillText('Exception', centerX, decisionY + 20);
+        ctx.fillText('levée ?', centerX, decisionY + 40);
+        
+        // Flèche de try à décision
+        drawArrow(centerX, tryY + boxHeight, centerX, decisionY);
+        
+        // Position des blocs except et else
+        const exceptY = decisionY + vertSpace + 40;
+        const exceptX = centerX + 200;
+        const elseX = centerX - 200;
+        
+        // Bloc except
+        ctx.fillStyle = '#fdeaef';
+        ctx.strokeStyle = '#e74c3c';
+        roundRect(exceptX - boxWidth/2, exceptY, boxWidth, boxHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('except:', exceptX, exceptY + 20);
+        ctx.font = '14px Arial';
+        ctx.fillText('Gestion de l\'exception', exceptX, exceptY + 40);
+        
+        // Bloc else
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(elseX - boxWidth/2, exceptY, boxWidth, boxHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('else:', elseX, exceptY + 20);
+        ctx.font = '14px Arial';
+        ctx.fillText('Exécuté si pas d\'exception', elseX, exceptY + 40);
+        
+        // Flèches de décision
+        drawArrow(centerX + 80, decisionY + 30, exceptX, exceptY, '#e74c3c', 'Oui', '#e74c3c');
+        drawArrow(centerX - 80, decisionY + 30, elseX, exceptY, '#27ae60', 'Non', '#27ae60');
+        
+        // Bloc finally
+        const finallyY = exceptY + vertSpace + 40;
+        ctx.fillStyle = '#f3e7ff';
+        ctx.strokeStyle = '#9b59b6';
+        roundRect(centerX - boxWidth/2, finallyY, boxWidth, boxHeight);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('finally:', centerX, finallyY + 20);
+        ctx.font = '14px Arial';
+        ctx.fillText('Toujours exécuté', centerX, finallyY + 40);
+        
+        // Flèches vers finally
+        drawArrow(exceptX, exceptY + boxHeight, centerX + boxWidth/4, finallyY);
+        drawArrow(elseX, exceptY + boxHeight, centerX - boxWidth/4, finallyY);
+        
+        // Fin
+        const endY = finallyY + vertSpace + 20;
+        ctx.fillStyle = '#e8f4fd';
+        ctx.strokeStyle = '#3498db';
+        roundRect(centerX - 60, endY, 120, 40);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 16px Arial';
+        ctx.fillText('Fin', centerX, endY + 25);
+        
+        // Flèche de finally à fin
+        drawArrow(centerX, finallyY + boxHeight, centerX, endY);
+        
+        // Cas spécial: flèche en pointillés de try à finally pour montrer la possibilité de skipping
+        drawArrow(centerX + 100, tryY + boxHeight/2, centerX + 150, tryY + boxHeight/2 + 70, '#9b59b6', 'Exceptions non capturées', '#9b59b6', false, true);
+        drawArrow(centerX + 150, tryY + boxHeight/2 + 70, centerX + 100, finallyY - 20, '#9b59b6', '', '#9b59b6', false, true);
+        drawArrow(centerX + 100, finallyY - 20, centerX + boxWidth/4, finallyY, '#9b59b6', '', '#9b59b6', false, true);
+        
+        // Légende
+        const legendX = 50;
+        const legendY = 550;
+        ctx.fillStyle = '#f1f1f1';
+        ctx.strokeStyle = '#ddd';
+        roundRect(legendX, legendY - 40, 700, 75);
+        ctx.fill();
+        ctx.stroke();
+        
+        ctx.fillStyle = '#333';
+        ctx.font = 'bold 14px Arial';
+        ctx.textAlign = 'left';
+        ctx.fillText('Points clés :', legendX + 10, legendY - 20);
+        
+        ctx.font = '13px Arial';
+        ctx.fillText('• Le bloc try tente d\'exécuter le code protégé', legendX + 10, legendY);
+        ctx.fillText('• Si une exception est levée, le bloc except correspondant est exécuté (sinon le bloc else)', legendX + 10, legendY + 20);
+        ctx.fillText('• Le bloc finally est toujours exécuté, que ce soit après except, else, ou même si une exception non traitée est levée', legendX + 10, legendY + 40);
+    </script>
+</body>
+</html>
